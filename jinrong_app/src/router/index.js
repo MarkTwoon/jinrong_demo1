@@ -26,6 +26,10 @@ const routes = [
     path:'/404',
     name:'404',
     component: () => import( '../views/404.vue')
+  },{
+  path:'/test',
+    name:'testPage',
+    component: () => import( '../views/testPage.vue')
   }
 ]
 /*const routes = [

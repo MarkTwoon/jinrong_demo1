@@ -10,11 +10,13 @@
   "dependencies": {
     "axios": "^0.21.1",
     "core-js": "^3.6.5",
+    "express": "^4.17.1",
     "jquery": "^3.5.1",
     "layui-src": "^2.5.8",
     "qs": "^6.9.6",
     "vue": "^3.0.0",
-    "vue-router": "^4.0.0-0"
+    "vue-router": "^4.0.0-0",
+    "vue3-lazyload": "^0.2.2-beta"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",
