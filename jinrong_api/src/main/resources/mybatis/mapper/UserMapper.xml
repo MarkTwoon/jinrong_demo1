@@ -24,4 +24,27 @@
     </where>
     </select>
 
+    <select id="selectIndexPageHeadNumber" parameterType="map" resultType="map"
+    useCache="true" flushCache="false">
+SELECT  (select CITY_NAME from tb_city where CITY_ID=(tu.CITY_ID)) as cityName,count(*)+(select CITY_NUM from tb_city where CITY_ID = (tu.CITY_ID))
+ as joinUser,IFNULL(SUM(ash.SHARE_NUMBER),0)+(select CITY_NUM from tb_city where CITY_ID = (tu.CITY_ID))   as shareMan,
+ IFNULL(SUM(ash.SHARE_NUMBER),0)+count(*)+(select CITY_NUM * 2 from tb_city where CITY_ID = (tu.CITY_ID)) as readMan FROM admin_share as ash JOIN tb_user as tu on ash.USER_ID=tu.USER_ID
+ where tu.CITY_ID = #{cityId}
+    </select>
+
+    <select id="selectCityCouponByCityId" parameterType="map" resultType="map"
+    useCache="true" flushCache="false">
+    SELECT
+tcy.CITY_NAME as cityName,
+tcp.COUPON_IMG as couponImg,
+tcp.COUPON_OLDPRICE as couponOldPrice,
+tcp.COUPON_LOWPRICE as couponLowPrice,
+tcp.COUPON_MAIN as couponMain
+from tb_coupon as tcp
+JOIN tb_city as tcy ON
+tcp.CITY_ID=tcy.CITY_ID
+where tcy.CITY_ID=#{cityId}
+    </select>
+
+
 </mapper>

@@ -2,10 +2,10 @@
 <template>
     <div class="topbar"   id="topbar">
 
-        <a class="fl" style="text-decoration: underline;margin-right: 16px;color: #666;" href="cityStart.html" id="cityName">${map1.cityName}</a>
-        <span> <i class="red" id="readMan">${map.readMan}</i>人查看</span>
-        <span> <i class="red"  id="shareMan">${map.shareMan}</i>人分享</span>
-        <span> <i class="red"  id="joinUser">${map.joinUser}</i>人报名</span>
+        <a class="fl" style="text-decoration: underline;margin-right: 16px;color: #666;" href="cityStart.html" id="cityName">{{cityName}}</a>
+        <span> <i class="red" id="readMan">{{readMan}}</i>人查看</span>
+        <span> <i class="red"  id="shareMan">{{shareMan}}</i>人分享</span>
+        <span> <i class="red"  id="joinUser">{{joinUser}}</i>人报名</span>
         <a class="fl" style="text-decoration: underline;margin-right: 16px; color: #666;" id="f1" onclick="goToLogin('loginDiv');">会员登录<!--退出--></a>
 
     </div>
@@ -32,19 +32,19 @@
         <form action="">
             <div class="input2">
                 <span class="col1">城市：</span>
-                <input type="text"  id="cityName0" value="${map1.cityName}" readonly="readonly"/>
+                <input type="text"  id="cityName0" :value="cityName" readonly="readonly"/>
             </div>
             <div class="input2">
                 <span class="col2">价格：</span>
-                <input type="text" id="cityPrice1" value="${map1.couponOldPrice}" readonly="readonly"/>
+                <input type="text" id="cityPrice1" :value="couponOldPrice" readonly="readonly"/>
             </div>
             <div class="input2">
                 <span class="col1">姓名：</span>
-                <input type="text" id="userName0"  value="${map1.userName}" readonly="readonly" />
+                <input type="text" id="userName0"  :value="userName" readonly="readonly" />
             </div>
             <div class="input2">
                 <span class="col2">底价：</span>
-                <input type="text" id="cityPrice0" value="${map1.couponLowPrice}" readonly="readonly"/>
+                <input type="text" id="cityPrice0" :value="couponLowPrice" readonly="readonly"/>
             </div>
         </form>
         <img src="../assets/images/toSign-bg.png" alt="" width="750" style="width:100%; float: left;">
@@ -170,18 +170,69 @@
 </template>
 
 <script>
-    import  cpImg from  '../assets/images/couponImg.jpg';
 
+    import  cpImg from  '../assets/upload/288d9986-aae3-4aff-83b0-d0d9b921ab6a.jpg';
+    import axios from 'axios/dist/axios.min.js';
+    import qs from 'qs/dist/qs.js';
     export default {
         name: "indexPage",
         data(){
             return{
                 cityId:this.$route.query.cityId,
-                 couponImg:this.$route.query.couponImg==undefined? cpImg:this.$route.query.couponImg,
+                // couponImg:this.$route.query.couponImg==undefined? cpImg:require("../assets/images/"+this.$route.query.couponImg+""),
+                couponImg:cpImg,
+                cityName:'',
+                readMan:'',
+                couponOldPrice:'',
+                couponLowPrice:'',
+                shareMan:'',
+                joinUser:'',
+                userName:'',
             }
         },
         mounted() {
+            const _this=this;
+          //  alert(_this.couponImg );
+            axios.post('/api/indexPageMainData',qs.stringify({'cityId':_this.cityId})).then(function (response) {
+            const data=response.data;
+            if(data.code==200){
+            //_this.couponImg=require(data.data.couponImg);
+                const data1=data.data.indexData1;
+                const data2=data.data.indexData2;
+                const userData=data.data.userData;
+                _this.cityName=data1.cityName;
+                _this.readMan=data1.readMan;
+                _this.shareMan=data1.shareMan;
+                _this.joinUser=data1.joinUser;
+                _this.couponOldPrice=data2.couponOldPrice;
+                _this.couponLowPrice=data2.couponLowPrice;
+                _this.userName=userData==null?'暂未登录':userData.userName;
+                _this.couponImg=require('../assets/upload/'+data2.couponImg);
 
+            }else{
+               layui.use(['laypage','layer','laydate'],function () {
+                   layer.msg(data.message,{icon: 6,time:2000, shade:0.4}
+                   ,function(){
+                           _this.$router.push('/');
+               });
+               })
+              /*  alert(data.message);*/
+                //console.log(data);
+            }
+            });
+
+        setTimeout(_this.getWinUsers,500);
+        },methods:{
+            getWinUsers:function () {
+                const  _this=this;
+                 axios.post('/api/winUserData',qs.stringify({'cityId':this.cityId})).then(function (response) {
+                    const  data=response.data;
+                    if(data.code=200){
+                    console.log(data);
+                       setTimeout(_this.getWinUsers,1000*60*2.2);
+                    }
+                })
+            }
         },computed:{
            /* couponImg:function(){
                 return  this.$route.query.couponImg==undefined?'../assets/images/couponImg.jpg':this.$route.query.couponImg;
@@ -189,7 +240,7 @@
         }
     }
 </script>
-
+<style scoped src="layui-src/dist/css/layui.css"></style>
 <style scoped src="../assets/css/style.css"></style>
 <style scoped >
     .wrap-activity a {line-height: 32px; }

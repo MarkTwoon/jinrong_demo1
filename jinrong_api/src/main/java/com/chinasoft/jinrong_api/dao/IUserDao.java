@@ -9,4 +9,6 @@ public interface IUserDao {                       /*传String参数的 形式参
                                                              String其参数值 无须强制转换 容错率更高*/
 public List<Map<String,Object>> selectGoodsAll(@Param(value="goodsId") String goodsId);
 public List<Map<String,Object>> selectCityMainByWhere(Map<String,Object> map);
+public List<Map<String,Object>>  selectIndexPageHeadNumber(Map<String,Object> map);
+public List<Map<String,Object>> selectCityCouponByCityId(Map<String,Object> map);
 }

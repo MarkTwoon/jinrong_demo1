@@ -11,6 +11,7 @@
             <template  v-for="city in cityList">
             <a data-id='420100'  :href="'#/indexPage?cityId='+city.cityId">{{city.cityName}}</a>
             </template>
+            <h2 style="color: red;" v-show="msg!=''">{{msg}}</h2>
         </div>
 
         <div class="letter">
@@ -30,14 +31,19 @@
         data(){
           return{
               cityList:[],
+              msg:'',
           }
         },
         mounted() {
             const _this=this;
             axios.post('/api/getCityData',{}).then(function (response) {
                 const data=response.data;
-                console.log(data.data);
-                _this.cityList=data.data;
+                if(data.code==200){
+                    _this.cityList=data.data;
+                }else{
+                    _this.msg=data.message;
+                }
+
             });
         }
     }

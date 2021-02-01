@@ -18,7 +18,16 @@ const routes = [
   path:'/indexPage',
   name:'indexPage',
     component: () => import( '../views/indexPage.vue')
-  }]
+  },
+  { path:'/:pathMatch(.*)',
+    redirect: '/404',
+  },
+  {
+    path:'/404',
+    name:'404',
+    component: () => import( '../views/404.vue')
+  }
+]
 /*const routes = [
   {
     path: '/',

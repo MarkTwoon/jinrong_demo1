@@ -22,4 +22,14 @@ public class UserServiceImpl implements IUserService {
     public List<Map<String, Object>> selectCityMainByWhere(Map<String, Object> map) {
         return userDao.selectCityMainByWhere(map);
     }
+
+    @Override
+    public List<Map<String, Object>> selectIndexPageHeadNumber(Map<String, Object> map) {
+        return userDao.selectIndexPageHeadNumber(map);
+    }
+
+    @Override
+    public List<Map<String, Object>> selectCityCouponByCityId(Map<String, Object> map) {
+        return userDao.selectCityCouponByCityId(map);
+    }
 }
