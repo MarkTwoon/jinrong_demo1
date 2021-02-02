@@ -46,5 +46,53 @@ tcp.CITY_ID=tcy.CITY_ID
 where tcy.CITY_ID=#{cityId}
     </select>
 
+    <select id="selectSuccessUserList" parameterType="map" resultType="map"
+    useCache="true"  flushCache="false">
+   SELECT   tu.USER_ID AS userId,concat(SUBSTRING(tu.USER_NAME,1,1),'*',SUBSTRING(tu.USER_NAME,3,100))  AS userName,DATE_FORMAT(acs.SHARE_TIME,'%Y-%m-%d %H:%m:%S')  AS shareTime
+  from  tb_nowprice  as tnp JOIN  admin_share as acs JOIN tb_coupon as tcp JOIN tb_user as tu
+ on tnp.USER_ID=acs.USER_ID AND tu.USER_ID=tnp.USER_ID AND tnp.COUPON_ID=acs.COUPON_ID AND tnp.COUPON_ID=tcp.COUPON_ID
+WHERE tnp.NOWPRICE_NUMBER &lt;=tcp.COUPON_LOWPRICE  AND tcp.CITY_ID=#{cityId}
+    </select>
+
+    <select id="selectBusinessTypeList" resultType="map" useCache="true" flushCache="false" >
+    select
+     tbu.BUSINESSTYPE_ID as businessTypeId,
+     tbu.BUSINESSTYPE_MAIN as businessTypeMain
+     from tb_businesstype as tbu
+    </select>
+
+    <select id="ActivitiesCouponListToIndex" resultType="map" parameterType="map"
+            useCache="true" flushCache="false" >
+SELECT
+tcp.COUPON_MAIN as couponMain,
+aac.ACTIVITIES_NAME as activitiesName,
+DATE_FORMAT(aac.ACTIVITIES_FIRSTTIME,'%Y.%m.%d')
+as activitiesFirstTime,
+DATE_FORMAT(aac.ACTIVITIES_LASTTIME,'%Y.%m.%d')
+as activitiesLastTime,
+aac.ACTIVITIES_PREFERENTIAL  as activitiesPrefeRential,
+abu.BUSINESS_NAME as businessName,aac.ACTIVITIES_IMG
+as activitiesImg,abu.BUSINESS_ID as businessId,
+aac.ACTIVITIES_ID as activitiesId
+
+ from  tb_coupon as tcp
+JOIN admin_activities as aac JOIN
+admin_business  as abu JOIN
+tb_businesstype as tby
+on tcp.COUPON_ID=aac.COUPON_ID AND
+aac.BUSINESS_ID=abu.BUSINESS_ID AND
+abu.BUSINESSTYPE_ID=tby.BUSINESSTYPE_ID
+<where>
+   <if test="cityId!=null and cityId!=''">
+  tcp.CITY_ID=#{cityId}
+   </if>
+   <if test="businessTypeId!=null and businessTypeId!='' and
+   (businessTypeId+'')!='undifend' ">
+   and tby.BUSINESSTYPE_ID=#{businessTypeId}
+   </if>
+
+</where>
+    </select>
+
 
 </mapper>

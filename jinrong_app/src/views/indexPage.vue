@@ -2,10 +2,10 @@
 <template>
     <div class="topbar"   id="topbar">
 
-        <a class="fl" style="text-decoration: underline;margin-right: 16px;color: #666;" href="cityStart.html" id="cityName">{{cityName}}</a>
-        <span> <i class="red" id="readMan">{{readMan}}</i>人查看</span>
-        <span> <i class="red"  id="shareMan">{{shareMan}}</i>人分享</span>
-        <span> <i class="red"  id="joinUser">{{joinUser}}</i>人报名</span>
+        <a class="fl" style="text-decoration: underline;margin-right: 16px;color: #666;" href="cityStart.html" id="cityName">{{data1.cityName}}</a>
+        <span> <i class="red" id="readMan">{{data1.readMan}}</i>人查看</span>
+        <span> <i class="red"  id="shareMan">{{data1.shareMan}}</i>人分享</span>
+        <span> <i class="red"  id="joinUser">{{data1.joinUser}}</i>人报名</span>
         <a class="fl" style="text-decoration: underline;margin-right: 16px; color: #666;" id="f1" onclick="goToLogin('loginDiv');">会员登录<!--退出--></a>
 
     </div>
@@ -17,26 +17,30 @@
 
     <!--参与报名-->
     <div class="toSign re">
-        <div class="roast">
+        <div class="roast"  >
 
             <marquee  id="marquee1" direction="up" scrolldelay="600" height="40px" style="text-align:center;">
                 <!--<c:forEach items="${list001}" var="list1" varStatus="status">
                     <i class="red">${list1.userName}</i>于 ${list1.shareTime} 成功砍至底价 <br>
                     <span>&nbsp;</span><br>
                 </c:forEach>-->
-                <i class="red">${list1.userName}</i>于 ${list1.shareTime} 成功砍至底价 <br>
+
+                <template v-for="user in winUsers" v-if="typeof winUsers=='object'" >
+                <i class="red">{{user.userName}}</i>于 {{user.shareTime}} 成功砍至底价 <br>
                 <span>&nbsp;</span><br>
+                </template>
+                <i class="red" v-show="typeof winUsers=='string'">{{winUsers}}</i>
             </marquee>
         </div>
 
         <form action="">
             <div class="input2">
                 <span class="col1">城市：</span>
-                <input type="text"  id="cityName0" :value="cityName" readonly="readonly"/>
+                <input type="text"  id="cityName0" :value="data2.cityName" readonly="readonly"/>
             </div>
             <div class="input2">
                 <span class="col2">价格：</span>
-                <input type="text" id="cityPrice1" :value="couponOldPrice" readonly="readonly"/>
+                <input type="text" id="cityPrice1" :value="data2.couponOldPrice" readonly="readonly"/>
             </div>
             <div class="input2">
                 <span class="col1">姓名：</span>
@@ -44,7 +48,7 @@
             </div>
             <div class="input2">
                 <span class="col2">底价：</span>
-                <input type="text" id="cityPrice0" :value="couponLowPrice" readonly="readonly"/>
+                <input type="text" id="cityPrice0" :value="data2.couponLowPrice" readonly="readonly"/>
             </div>
         </form>
         <img src="../assets/images/toSign-bg.png" alt="" width="750" style="width:100%; float: left;">
@@ -181,18 +185,16 @@
                 cityId:this.$route.query.cityId,
                 // couponImg:this.$route.query.couponImg==undefined? cpImg:require("../assets/images/"+this.$route.query.couponImg+""),
                 couponImg:cpImg,
-                cityName:'',
-                readMan:'',
-                couponOldPrice:'',
-                couponLowPrice:'',
-                shareMan:'',
-                joinUser:'',
+                data1:'',
+                data2:'',
                 userName:'',
+                winUsers:'',
+                businessTypeId:'',
             }
         },
         mounted() {
             const _this=this;
-          //  alert(_this.couponImg );
+
             axios.post('/api/indexPageMainData',qs.stringify({'cityId':_this.cityId})).then(function (response) {
             const data=response.data;
             if(data.code==200){
@@ -200,12 +202,9 @@
                 const data1=data.data.indexData1;
                 const data2=data.data.indexData2;
                 const userData=data.data.userData;
-                _this.cityName=data1.cityName;
-                _this.readMan=data1.readMan;
-                _this.shareMan=data1.shareMan;
-                _this.joinUser=data1.joinUser;
-                _this.couponOldPrice=data2.couponOldPrice;
-                _this.couponLowPrice=data2.couponLowPrice;
+                _this.data1=data1;
+                _this.data2=data2;
+
                 _this.userName=userData==null?'暂未登录':userData.userName;
                 _this.couponImg=require('../assets/upload/'+data2.couponImg);
 
@@ -222,14 +221,37 @@
             });
 
         setTimeout(_this.getWinUsers,500);
+            setTimeout(_this.couponGoodsData,610);
         },methods:{
+            couponGoodsData:function(){
+                /*一个异步交互过程  返回2个list查询结果集 回调中注意区分
+                * DOM中  也需要2个v-for DOM迭代*/
+                const _this=this;
+              axios.post('/api/businessTypeAndGoodsData',qs.stringify({'cityId':this.cityId,'businessTypeId':this.businessTypeId})).then(function(response){
+                console.log(response.data);
+                  const  businessTypeList=response.data.businessTypeList;
+                  const  goodsList=response.data.goodsList;
+                  if(response.data.code===200){
+
+                  }else{
+
+                  }
+
+              });
+
+            },
             getWinUsers:function () {
                 const  _this=this;
                  axios.post('/api/winUserData',qs.stringify({'cityId':this.cityId})).then(function (response) {
                     const  data=response.data;
-                    if(data.code=200){
-                    console.log(data);
-                       setTimeout(_this.getWinUsers,1000*60*2.2);
+                     console.log(data);
+                    if(data.code==200){
+
+                    _this.winUsers=data.data;
+                  /*  alert(typeof _this.winUsers);*/
+                       setTimeout(_this.getWinUsers,parseInt(1000*60*2.2));
+                    }else{
+                        _this.winUsers=data.message;
                     }
                 })
             }

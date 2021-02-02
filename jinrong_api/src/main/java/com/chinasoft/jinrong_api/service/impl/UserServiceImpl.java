@@ -32,4 +32,19 @@ public class UserServiceImpl implements IUserService {
     public List<Map<String, Object>> selectCityCouponByCityId(Map<String, Object> map) {
         return userDao.selectCityCouponByCityId(map);
     }
+
+    @Override
+    public List<Map<String, Object>> selectSuccessUserList(Map<String, Object> map) {
+        return userDao.selectSuccessUserList(map);
+    }
+
+    @Override
+    public List<Map<String, Object>> selectBusinessTypeList(Map<String, Object> map) {
+        return userDao.selectBusinessTypeList(map);
+    }
+
+    @Override
+    public List<Map<String, Object>> ActivitiesCouponListToIndex(Map<String, Object> map) {
+        return userDao.ActivitiesCouponListToIndex(map);
+    }
 }

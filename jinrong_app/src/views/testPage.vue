@@ -2,9 +2,9 @@
     <h2>????</h2>
     <div id ="app">
         <ul>
-            <li v-for="img in list">
+            <li v-for="(img,index) in list">
 
-                <img style="width: 800px;height: 500px;" v-lazy="{src: img.src}">
+                <img style="width: 800px;height: 500px;" v-lazy="{src: img.src}" :key="'img'+index ">
 
             </li>
 

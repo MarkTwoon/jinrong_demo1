@@ -68,6 +68,17 @@ System.out.println(map);
 
     @RequestMapping(value = "/winUserData",method = RequestMethod.POST)
         public Object winUserData(@RequestParam Map<String,Object> map){
-    return  new ReturnData(StatusCode.REQUEST_SUCCESS,"???","查询获奖用户 数据成功！");
+        List<Map<String,Object>> list=userService.selectSuccessUserList(map);
+        if(list.size()<=0){
+            throw  new MyException(StatusCode.DATA_NULL,"暂无参与用户获奖");
+        }
+    return  new ReturnData(StatusCode.REQUEST_SUCCESS,list,"查询获奖用户 数据成功！");
+    }
+
+    @RequestMapping(value = "/businessTypeAndGoodsData",method = RequestMethod.POST)
+    public Object businessTypeAndGoodsData(@RequestParam Map<String,Object> map){
+        /*执行ORM过程 返回查询结果集的list*/
+
+      return new ReturnData(StatusCode.REQUEST_SUCCESS,"","查询商家类型 及优惠券数据成功");
     }
 }
