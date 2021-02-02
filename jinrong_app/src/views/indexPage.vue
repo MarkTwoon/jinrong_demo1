@@ -78,11 +78,15 @@
                     </a>
                 </li>
             </c:forEach>-->
-            <li>
-                <a href="selectAllActivitiesById.action?cityId=${map007.cityId}&businessTypeId=${list1.businessTypeId}&check0=${check0}&loginState=0">
-                    <i><img src="../assets/images/icon10.png" width="62" height="62" alt=""></i>
-                    <span>${list1.businessTypeMain}</span>
+            <li v-for="(businessType,index) in businessTypeList" v-if="typeof businessTypeList=='object'">
+                <a href="javascript:void(0)" @click="couponGoodsData(businessType.businessTypeId)" >
+                    <i><img :src="require('../assets/images/icon'+(index+1)+'.jpg')" width="62" height="62" alt=""></i>
+                    <span>{{businessType.businessTypeMain}}</span>
                 </a>
+
+            </li>
+            <li v-show="typeof businessTypeList=='string'">
+                <h2 style="color: red">{{businessTypeList}}</h2>
             </li>
         </ul>
 
@@ -100,18 +104,26 @@
                     </div>
                 </li>
             </c:forEach>-->
-            <li class="zm on re" style="z-index: 1;">
+            <li class="zm on re" style="z-index: 1;"
+                v-for="(good,index) in goodsList"
+            v-show="typeof goodsList=='object'">
                 <div class="fl imgbox" onclick="selectBusinessById('${list1.businessId}','${list1.activitiesId}');">
                     <div class="line"></div>
-                    <img src="/ssm/upload/${list1.activitiesImg}" alt="" style="width:100%;">
+                    <!--<img
+                            :src="require('../assets/upload/'+good.activitiesImg)" alt="" style="width:100%;">-->
+                    <img
+                        v-lazy="{src:require('../assets/upload/'+good.activitiesImg)}"
+                        alt="" style="width:100%;" :key="'img'+index">
                 </div>
                 <div class="fl use-on"  >
-                    <span onclick="go3();"  style="margin:0 auto;width:40px;line-height:40px;">${list1.activitiesPrefeRential}</span>
+                    <span onclick="go3();"  style="margin:0 auto;width:40px;line-height:40px;">{{good.activitiesPrefeRential}}</span>
                 </div>
             </li>
+
+            <li v-show="typeof goodsList=='string'"><h2 style="color: red">{{goodsList}}</h2></li>
         </ul>
         <div id="moreTo"></div>
-        <a   style="z-index: 1;" onclick="(function(){ layer.msg('活动优惠券已经到达展示尾页', {icon: 6}); })();">
+        <a   style="z-index: 1;" @click="lazyLoadingOut()">
             <div class="moreTo"  >
                 <span id="zuhao" > 下滑出现更多商家信息</span>
             </div>
@@ -189,7 +201,10 @@
                 data2:'',
                 userName:'',
                 winUsers:'',
-                businessTypeId:'',
+                markId:1,
+                /*商家类型 与商品数据 对象*/
+                businessTypeList:'',
+                goodsList:'',
             }
         },
         mounted() {
@@ -221,21 +236,21 @@
             });
 
         setTimeout(_this.getWinUsers,500);
-            setTimeout(_this.couponGoodsData,610);
+            setTimeout(_this.couponGoodsData(''),610);
         },methods:{
-            couponGoodsData:function(){
+            couponGoodsData:function(businessTypeId){
                 /*一个异步交互过程  返回2个list查询结果集 回调中注意区分
                 * DOM中  也需要2个v-for DOM迭代*/
                 const _this=this;
-              axios.post('/api/businessTypeAndGoodsData',qs.stringify({'cityId':this.cityId,'businessTypeId':this.businessTypeId})).then(function(response){
-                console.log(response.data);
-                  const  businessTypeList=response.data.businessTypeList;
-                  const  goodsList=response.data.goodsList;
-                  if(response.data.code===200){
-
-                  }else{
-
-                  }
+                /*先清除原有for迭代的DOM元素 再进行axios回调的新数据替换*/
+                this.goodsList='';
+              axios.post('/api/businessTypeAndGoodsData',qs.stringify({'cityId':this.cityId,'businessTypeId':businessTypeId,'markId':this.markId})).then(function(response){
+                    if(_this.markId==1){
+                        /*商家类型数据 在前端也只会赋值一次 迭代一次*/
+                        _this.businessTypeList=response.data.data.businessTypeList;
+                        _this.markId++;
+                    }
+                     _this.goodsList=response.data.data.goodsList;
 
               });
 
@@ -244,7 +259,7 @@
                 const  _this=this;
                  axios.post('/api/winUserData',qs.stringify({'cityId':this.cityId})).then(function (response) {
                     const  data=response.data;
-                     console.log(data);
+
                     if(data.code==200){
 
                     _this.winUsers=data.data;
@@ -254,6 +269,12 @@
                         _this.winUsers=data.message;
                     }
                 })
+            },
+            lazyLoadingOut:function () {
+                layui.use(['laypage','layer','laydate'],function () {
+                    layer.msg('活动优惠券已经到达展示尾页', {icon: 6});
+                });
+
             }
         },computed:{
            /* couponImg:function(){

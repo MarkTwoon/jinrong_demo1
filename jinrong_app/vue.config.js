@@ -1,12 +1,12 @@
 var webpack=require('webpack');
 module.exports={
     devServer:{
-       host:"localhost",
+      // host:"192.168.3.135",
         port:80,
         /*axios 代理链接全局配置*/
         proxy:{
         '/api':{
-            target:'http://localhost:8088/jinrong_api/',//后端地址
+            target:'http://192.168.3.135:8088/jinrong_api/',//后端地址
             secure:false,// 如果是https接口，需要配置这个参数
             ws:true,//是否代理websockets
             changeOrigin:true,/*前端工程化 axios跨域 配置*/

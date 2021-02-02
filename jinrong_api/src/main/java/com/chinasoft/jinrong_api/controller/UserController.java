@@ -78,7 +78,16 @@ System.out.println(map);
     @RequestMapping(value = "/businessTypeAndGoodsData",method = RequestMethod.POST)
     public Object businessTypeAndGoodsData(@RequestParam Map<String,Object> map){
         /*执行ORM过程 返回查询结果集的list*/
+    Map<String,Object> data=new HashMap<String,Object>();
+    if(Integer.parseInt(map.get("markId")+"")==1){
+        /*markId是axios的后端执行次数
+        只需要在第一次axios中返回商家类型数据即可 后面均不执行该冗余 SQL指令 注意异步执行效率*/
+  List<Map<String,Object>>  businessTypeList=userService.selectBusinessTypeList();
+  data.put("businessTypeList",businessTypeList.size()<=0?"暂无商家类型数据":businessTypeList);
+    }
 
-      return new ReturnData(StatusCode.REQUEST_SUCCESS,"","查询商家类型 及优惠券数据成功");
+   List<Map<String,Object>>  goodsList=userService.ActivitiesCouponListToIndex(map);
+      data.put("goodsList",goodsList.size()<=0?"暂无优惠券信息数据":goodsList);
+      return new ReturnData(StatusCode.REQUEST_SUCCESS,data,"查询商家类型 及优惠券数据成功");
     }
 }

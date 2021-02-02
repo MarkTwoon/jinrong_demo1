@@ -39,12 +39,14 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public List<Map<String, Object>> selectBusinessTypeList(Map<String, Object> map) {
-        return userDao.selectBusinessTypeList(map);
+    public List<Map<String, Object>> selectBusinessTypeList() {
+        return
+                userDao.selectBusinessTypeList();
     }
 
     @Override
     public List<Map<String, Object>> ActivitiesCouponListToIndex(Map<String, Object> map) {
-        return userDao.ActivitiesCouponListToIndex(map);
+        return
+                userDao.ActivitiesCouponListToIndex(map);
     }
 }
