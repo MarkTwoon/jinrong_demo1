@@ -27,6 +27,10 @@ const routes = [
     name:'404',
     component: () => import( '../views/404.vue')
   },{
+    path:'/loginPage',
+    name:'LoginPage',
+    component: () => import( '../views/LoginPage.vue')
+  },{
   path:'/test',
     name:'testPage',
     component: () => import( '../views/testPage.vue')

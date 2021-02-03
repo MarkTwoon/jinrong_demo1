@@ -1326,7 +1326,7 @@ p img {
 }
 
 .detail .title a {
-    background: url(../images/icon_03.png) no-repeat right -633px;
+    /*background: url(../images/icon_03.png) no-repeat right -633px;*/
     background-size: 20px;
     color: #222;
 }
@@ -1384,7 +1384,7 @@ p img {
 }
 
 .detail .adr_box .call {
-    background: url(../images/icon_03.png) no-repeat 0 -1241px;
+    /*background: url(../images/icon_03.png) no-repeat 0 -1241px;*/
     background-size: 24px;
     color: #41a1e1;
     font-size: 13px;
@@ -1519,7 +1519,7 @@ p img {
     display: block;
     width: 60%;
     height: 48px;
-    background: url(../images/icon_04.png) no-repeat right -913px;
+    /*background: url(../images/icon_04.png) no-repeat right -913px;*/
     background-size: 22px;
     padding-right: 36px;
     float: right;

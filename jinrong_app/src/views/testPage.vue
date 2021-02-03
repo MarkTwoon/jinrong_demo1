@@ -1,5 +1,7 @@
 <template>
     <h2>????</h2>
+
+
     <div id ="app">
         <ul>
             <li v-for="(img,index) in list">
@@ -10,15 +12,23 @@
 
         </ul>
 
-
     </div>
 </template>
 
 <script>
 
+
     export default {
         name: "testPage",
+        data(){
+            return{
+            name:'',
+            age:'',
+             submitStatus: null,
+            }
+        },methods:{
 
+        },
          computed: {
             list:function(){
                 var list1=[];

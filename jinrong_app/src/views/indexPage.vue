@@ -6,7 +6,10 @@
         <span> <i class="red" id="readMan">{{data1.readMan}}</i>人查看</span>
         <span> <i class="red"  id="shareMan">{{data1.shareMan}}</i>人分享</span>
         <span> <i class="red"  id="joinUser">{{data1.joinUser}}</i>人报名</span>
-        <a class="fl" style="text-decoration: underline;margin-right: 16px; color: #666;" id="f1" onclick="goToLogin('loginDiv');">会员登录<!--退出--></a>
+        <a class="fl"  v-if="typeof userData != object  "
+           style="text-decoration: underline;margin-right: 16px; color: #666;" id="f1" @click="goToLogin('loginDiv')">会员登录<!--退出--></a>
+        <a class="fl"  v-else
+           style="text-decoration: underline;margin-right: 16px; color: #666;" id="f2" onclick="goToLogin('loginDiv');">个人中心<!--退出--></a>
 
     </div>
     <div class="b">
@@ -52,8 +55,11 @@
             </div>
         </form>
         <img src="../assets/images/toSign-bg.png" alt="" width="750" style="width:100%; float: left;">
-        <div class="btn">
-            <img src="../assets/images/btn.png" alt="" width="200" style="width:100%; float: left;" onclick="goToLogin('registerDiv');">
+        <div class="btn" v-if="typeof userData != object">
+            <img src="../assets/images/btn.png" alt="" width="200" style="width:100%; float: left;" @click="goToLogin('registerDiv')">
+        </div>
+        <div class="btn" v-else>
+            <img src="../assets/images/btn_pay.png" alt="" width="200" style="width:100%; float: left;" onclick="goToLogin('registerDiv');">
         </div>
     </div>
 
@@ -205,6 +211,7 @@
                 /*商家类型 与商品数据 对象*/
                 businessTypeList:'',
                 goodsList:'',
+                userData:'',
             }
         },
         mounted() {
@@ -214,14 +221,13 @@
             const data=response.data;
             if(data.code==200){
             //_this.couponImg=require(data.data.couponImg);
-                const data1=data.data.indexData1;
-                const data2=data.data.indexData2;
-                const userData=data.data.userData;
-                _this.data1=data1;
-                _this.data2=data2;
+                _this.data1=data.data.indexData1;
+                _this.data2=data.data.indexData2;
+                _this.userData=data.data.userData;
+               /* console.log(  _this.userData);*/
 
-                _this.userName=userData==null?'暂未登录':userData.userName;
-                _this.couponImg=require('../assets/upload/'+data2.couponImg);
+                _this.userName=_this.userData==null?'暂未登录':_this.userData.userName;
+                _this.couponImg=require('../assets/upload/'+_this.data2.couponImg);
 
             }else{
                layui.use(['laypage','layer','laydate'],function () {
@@ -275,6 +281,17 @@
                     layer.msg('活动优惠券已经到达展示尾页', {icon: 6});
                 });
 
+            },
+            goToLogin:function(divType){
+                let routerPage='';
+                if(divType.indexOf('Div')>-1){
+                    routerPage='#/loginPage?' +
+                        'cityId='+this.cityId+'&display='+divType
+                        +'&cityName='+this.data2.cityName;
+                }else{
+                   /*指向个人中心 vue组件*/
+                }
+                this.$router.push(routerPage);
             }
         },computed:{
            /* couponImg:function(){
