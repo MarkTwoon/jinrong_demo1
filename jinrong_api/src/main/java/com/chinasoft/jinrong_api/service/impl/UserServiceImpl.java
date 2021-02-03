@@ -49,4 +49,9 @@ public class UserServiceImpl implements IUserService {
         return
                 userDao.ActivitiesCouponListToIndex(map);
     }
+
+    @Override
+    public List<Map<String, Object>> selectUserNameAndPassWord(Map<String, Object> map) {
+        return userDao.selectUserNameAndPassWord(map);
+    }
 }

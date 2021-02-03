@@ -90,4 +90,22 @@ System.out.println(map);
       data.put("goodsList",goodsList.size()<=0?"暂无优惠券信息数据":goodsList);
       return new ReturnData(StatusCode.REQUEST_SUCCESS,data,"查询商家类型 及优惠券数据成功");
     }
+
+    @RequestMapping(value = "/checkUserMain",method = RequestMethod.POST,params = {"userPhone"})
+    public Object checkUserMain(HttpServletRequest request,
+                                @RequestParam Map<String,Object> map){
+        List<Map<String,Object>> list=userService.selectUserNameAndPassWord(map);
+          /*登录又分2块 表单验证与提交登录*/
+        boolean msg=false;
+        if(list.size()>0) {
+            /*如果是提交登录的情况下 有结果集 session记录 登录用户*/
+            if (map.containsKey("userPassWord")) {
+                request.getSession().setAttribute(FinalMsg.SESSION_USERDATA,list.get(0));
+            }
+            msg=true;
+        }else{
+            msg=false;
+        }
+    return new ReturnData(StatusCode.REQUEST_SUCCESS,msg,"查询用户个人信息成功");
+    }
 }

@@ -110,6 +110,8 @@
 </template>
 
 <script>
+    import axios from 'axios/dist/axios.min.js';
+    import qs from 'qs/dist/qs.js';
   import "../assets/js/inputCheck/jquery.validate.min.js";
   import  "../assets/js/inputCheck/messages_zh.js";
     export default {
@@ -127,6 +129,11 @@
             })
 
         },methods:{
+            layMsg:function(msg){
+                layui.use(['laypage','layer','laydate'],function () {
+                    layer.msg(msg, {icon: 6,time:2000, shade:0.4});
+                });
+            },
             goToDiv:function(display){
                 this.display=display;
                 const _this=this;
@@ -139,17 +146,18 @@
             },
             validFrom:function (display) {
                 /*自定义 验证规范  定义正则演示*/
-                $.validator.addMethod("checkUserLoginPhone", function (value, element) {
-                    let tel = /^[0-9]{12}$/;
-                    /*  return this.optional(element) || (tel.test(value));*/
-                    return this.optional(element) || (tel.test(value));
+                const _this=this;
+               /* $.validator.addMethod("checkUserLoginPhone", function (value, element) {
+                     let tel = /^[0-9]{12}$/;
+                       return this.optional(element) || (tel.test(value));
+
+                    return this.optional(element) || (_this.checkUserMain(value));
                 }, "此用户名手机号不存在");
 
                 $.validator.addMethod("checkUserRegisterPhone", function (value, element) {
-                    let tel = /^[0-9]{12}$/;
-                    /*  return this.optional(element) || (tel.test(value));*/
-                    return this.optional(element) || (tel.test(value));
-                }, "此用户名手机号已存在");
+
+                    return this.optional(element) || (!_this.checkUserMain(value));
+                }, "此用户名手机号已存在");*/
 
                 if(display==="loginDiv"){
                 return $("#loginForm").validate({
@@ -172,8 +180,30 @@
                             required: true,
                             /*表示为最小长度 需要达到*/
                             minlength: 11,
-                            /*自定义 验证规则*/
-                            checkUserLoginPhone: true,
+                            /*自定义 验证规则 remote为axjx检测 异步交互方式*/
+                            remote: {
+                                type: "post",
+                                url: "api/checkUserMain",
+                                data: {
+                                    userPhone: function() {
+                                        return $("#userLoginPhone").val();
+                                    }
+                                },
+                                dataType: "json",
+                                dataFilter: function(data, type) {
+                                    const jsondata=JSON.parse(data);
+                                  if(jsondata.code===200){
+                                      if (jsondata.data)
+                                          return true;
+                                      else
+                                          return false;
+                                  }else{
+                                      _this.layMsg(jsondata.message);
+                                      return false;
+                                  }
+                                  }
+
+                            }
                         },
                         userLoginPassWord: {
                             required: true,
@@ -184,6 +214,7 @@
                         userLoginPhone: {
                             required: "请输入登录用户名",
                             minlength: "手机号长度不能小于 11 位",
+                            remote: "用户名不存在",
                         },
                         userLoginPassWord: {
                             required: "请输入登录密码",
@@ -267,6 +298,7 @@
         }
     }
 </script>
+<style scoped src="layui-src/dist/css/layui.css"></style>
 <style scoped src="../assets/css/style7.css"></style>
 <style scoped>
     .sign-in {  height: 68%;}

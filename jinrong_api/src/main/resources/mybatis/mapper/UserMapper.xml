@@ -94,5 +94,21 @@ abu.BUSINESSTYPE_ID=tby.BUSINESSTYPE_ID
 </where>
     </select>
 
-
+<select id="selectUserNameAndPassWord" parameterType="map" resultType="map"
+useCache="true" flushCache="false">
+select
+tu.USER_ID as userId,
+tu.USER_NAME as userName,
+tu.USER_PHONE  as userPhone,
+tu.CITY_ID  as  cityId,
+tu.USER_PASSWORD as userPassWord,
+tu.COUPON_ID  as couponId,
+tu.USER_SEX as userSex,
+tu.USER_IMG  as userImg
+ from tb_user as tu
+ where tu.USER_PHONE=#{userPhone}
+ <if test="userPassWord!=null and userPassWord!='' ">
+ and tu.USER_PASSWORD=#{userPassWord}
+ </if>
+</select>
 </mapper>
