@@ -113,7 +113,7 @@
 
 <script>
     import axios from 'axios/dist/axios.min.js';
-    axios.defaults.withCredentials=true;
+
     import qs from 'qs/dist/qs.js';
     /*一般的Vue轻量级插件 在vue组件中 外联 按需引入即可*/
     import  $cookies from 'vue-cookies';
@@ -186,7 +186,9 @@
                                     $cookies.set("userPassWord",Base64.encode(_this.loginFromData.userPassWord),'7d');*/
                                     $cookies.set("userPhone",jm.jiami(_this.loginFromData.userPhone),'7d');
                                     $cookies.set("userPassWord",jm.jiami(_this.loginFromData.userPassWord),'7d');
-                                   // alert(_this.cityId);
+
+                                    sessionStorage.setItem("userData",JSON.stringify(_this.loginFromData));
+
                                     _this.$router.push('#/indexPage?cityId='+_this.loginFromData.cityId);
                                     setTimeout(() => {
                                         _this.isDisable = !_this.isDisable;
@@ -199,6 +201,8 @@
                                     _this.isDisable = !_this.isDisable;
                                     _this.layMsg("注册成功！", 6);
                                     _this.registerFromData.userPhone='';
+                                    sessionStorage.setItem("userData",JSON.stringify(_this.registerFromData));
+
                                     _this.$router.push('#/indexPage?cityId='+_this.registerFromData.cityId);
                                     setTimeout(() => {
                                         _this.isDisable = !_this.isDisable;

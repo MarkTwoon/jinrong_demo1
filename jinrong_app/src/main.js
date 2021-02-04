@@ -3,6 +3,7 @@ import App from './App.vue'
 import router from './router'
 import VueLazyLoad from 'vue3-lazyload'
 
+
 // createApp(App).use(router).use(VueLazyload, {
 //     preLoad: 1.3,
 //     error: require('./assets/img/error.png'),

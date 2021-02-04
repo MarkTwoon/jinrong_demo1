@@ -55,15 +55,4 @@ class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
 
     <!--后端异常类 错误处理包链接配置 -->
     <bean  id="customExceptionAdvice" class="com.chinasoft.jinrong_api.exception.CustomExceptionAdvice"/>
-
-
-    <!-- 配置  同源策略拦截器 -->
-    <mvc:interceptors>
-        <mvc:interceptor>
-            <!-- 配置拦截器作用的路径 -->
-            <mvc:mapping path="/**" />
-            <bean class="com.chinasoft.jinrong_api.interceptor.CORSInterceptor" />
-        </mvc:interceptor>
-    </mvc:interceptors>
-
 </beans>

@@ -6,7 +6,7 @@
         <span> <i class="red" id="readMan">{{data1.readMan}}</i>人查看</span>
         <span> <i class="red"  id="shareMan">{{data1.shareMan}}</i>人分享</span>
         <span> <i class="red"  id="joinUser">{{data1.joinUser}}</i>人报名</span>
-        <a class="fl"  v-if="typeof userData != object  "
+        <a class="fl"  v-if="userData == null "
            style="text-decoration: underline;margin-right: 16px; color: #666;" id="f1" @click="goToLogin('loginDiv')">会员登录<!--退出--></a>
         <a class="fl"  v-else
            style="text-decoration: underline;margin-right: 16px; color: #666;" id="f2" onclick="goToLogin('loginDiv');">个人中心<!--退出--></a>
@@ -55,7 +55,7 @@
             </div>
         </form>
         <img src="../assets/images/toSign-bg.png" alt="" width="750" style="width:100%; float: left;">
-        <div class="btn" v-if="typeof userData != object">
+        <div class="btn" v-if="userData == null">
             <img src="../assets/images/btn.png" alt="" width="200" style="width:100%; float: left;" @click="goToLogin('registerDiv')">
         </div>
         <div class="btn" v-else>
@@ -195,7 +195,6 @@
 
     import  cpImg from  '../assets/upload/288d9986-aae3-4aff-83b0-d0d9b921ab6a.jpg';
     import axios from 'axios/dist/axios.min.js';
-    axios.defaults.withCredentials=true;
     import qs from 'qs/dist/qs.js';
     export default {
         name: "indexPage",
@@ -212,19 +211,19 @@
                 /*商家类型 与商品数据 对象*/
                 businessTypeList:'',
                 goodsList:'',
-                userData:'',
+                userData:JSON.parse(sessionStorage.getItem("userData")),
             }
         },
         mounted() {
             const _this=this;
-
+            console.log((typeof _this.userData == 'object')+">>>>>>>>>>>>");
             axios.post('/api/indexPageMainData',qs.stringify({'cityId':_this.cityId})).then(function (response) {
             const data=response.data;
             if(data.code==200){
             //_this.couponImg=require(data.data.couponImg);
                 _this.data1=data.data.indexData1;
                 _this.data2=data.data.indexData2;
-                _this.userData=data.data.userData;
+               /* _this.userData=data.data.userData;*/
                  console.log(  _this.userData);
 
                 _this.userName=_this.userData==null?'暂未登录':_this.userData.userName;
