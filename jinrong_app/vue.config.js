@@ -5,7 +5,7 @@ module.exports={
         port:80,
         /*axios 代理链接全局配置*/
         proxy:{
-        '/api':{
+        '/api':{ //名字必须跟application context相同 否则404
             target:'http://192.168.3.135:8088/jinrong_api/',//后端地址
             secure:false,// 如果是https接口，需要配置这个参数
             ws:true,//是否代理websockets

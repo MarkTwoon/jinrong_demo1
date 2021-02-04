@@ -24,7 +24,7 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="37da2ba0-4c7a-42af-906e-9f92f68b648a" name="Default Changelist" comment="Mr.Yi 2021.2.3 18:01 Web前后端分离综合小案例——双项目开发 第八次提交">
+    <list default="true" id="37da2ba0-4c7a-42af-906e-9f92f68b648a" name="Default Changelist" comment="Mr.Yi 2021.2.4 12:27 Web前后端分离综合小案例——双项目开发 第九次提交">
       <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__aopalliance_aopalliance_1_0.xml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_alibaba_druid_1_1_22.xml" afterDir="false" />
@@ -73,6 +73,7 @@
       <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_tx_4_0_2_RELEASE.xml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_web_4_0_2_RELEASE.xml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_webmvc_4_0_2_RELEASE.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/jinrong_api/src/main/java/com/chinasoft/jinrong_api/interceptor/CORSInterceptor.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/jinrong_api/target/classes/com/chinasoft/jinrong_api/util/FinalMsg.class" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/jinrong_api/target/jinrong_api/WEB-INF/classes/com/chinasoft/jinrong_api/util/FinalMsg.class" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/jinrong_api/target/jinrong_api/sql/youhuiquan.sql" afterDir="false" />
@@ -24936,6 +24937,7 @@
       <change afterPath="$PROJECT_DIR$/jinrong_app/src/assets/img/4.jpg" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/jinrong_app/src/assets/img/error.png" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/jinrong_app/src/assets/img/loading.gif" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/jinrong_app/src/assets/js/aes/jiami.js" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/jinrong_app/src/assets/upload/002f65e5-e497-44d8-a4c3-ccb94bdcfe62.jpg" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/jinrong_app/src/assets/upload/03b4590c-8434-4e3d-994c-953e08a4dde1.jpg" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/jinrong_app/src/assets/upload/046f2c11-d884-42ed-8d72-724c7eee4967.jpg" afterDir="false" />
@@ -25245,23 +25247,24 @@
       <change afterPath="$PROJECT_DIR$/jinrong_app/src/assets/upload/fcfe2c94-fcbd-4956-8079-47f8802f8267.jpg" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/jinrong_api/src/main/java/com/chinasoft/jinrong_api/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/jinrong_api/src/main/java/com/chinasoft/jinrong_api/controller/UserController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/jinrong_api/src/main/java/com/chinasoft/jinrong_api/dao/IUserDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/jinrong_api/src/main/java/com/chinasoft/jinrong_api/dao/IUserDao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/jinrong_api/src/main/java/com/chinasoft/jinrong_api/service/IUserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/jinrong_api/src/main/java/com/chinasoft/jinrong_api/service/IUserService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/jinrong_api/src/main/java/com/chinasoft/jinrong_api/service/impl/UserServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/jinrong_api/src/main/java/com/chinasoft/jinrong_api/service/impl/UserServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/jinrong_api/src/main/resources/mybatis/mapper/UserMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/jinrong_api/src/main/resources/mybatis/mapper/UserMapper.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/jinrong_api/src/main/resources/spring-mvc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/jinrong_api/src/main/resources/spring-mvc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/jinrong_api/target/classes/com/chinasoft/jinrong_api/controller/UserController.class" beforeDir="false" afterPath="$PROJECT_DIR$/jinrong_api/target/classes/com/chinasoft/jinrong_api/controller/UserController.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/jinrong_api/target/classes/com/chinasoft/jinrong_api/dao/IUserDao.class" beforeDir="false" afterPath="$PROJECT_DIR$/jinrong_api/target/classes/com/chinasoft/jinrong_api/dao/IUserDao.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/jinrong_api/target/classes/com/chinasoft/jinrong_api/service/IUserService.class" beforeDir="false" afterPath="$PROJECT_DIR$/jinrong_api/target/classes/com/chinasoft/jinrong_api/service/IUserService.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/jinrong_api/target/classes/com/chinasoft/jinrong_api/service/impl/UserServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/jinrong_api/target/classes/com/chinasoft/jinrong_api/service/impl/UserServiceImpl.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/jinrong_api/target/classes/mybatis/mapper/UserMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/jinrong_api/target/classes/mybatis/mapper/UserMapper.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/jinrong_api/target/classes/spring-mvc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/jinrong_api/target/classes/spring-mvc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/jinrong_api/target/jinrong_api/WEB-INF/classes/com/chinasoft/jinrong_api/controller/UserController.class" beforeDir="false" afterPath="$PROJECT_DIR$/jinrong_api/target/jinrong_api/WEB-INF/classes/com/chinasoft/jinrong_api/controller/UserController.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/jinrong_api/target/jinrong_api/WEB-INF/classes/com/chinasoft/jinrong_api/dao/IUserDao.class" beforeDir="false" afterPath="$PROJECT_DIR$/jinrong_api/target/jinrong_api/WEB-INF/classes/com/chinasoft/jinrong_api/dao/IUserDao.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/jinrong_api/target/jinrong_api/WEB-INF/classes/com/chinasoft/jinrong_api/service/IUserService.class" beforeDir="false" afterPath="$PROJECT_DIR$/jinrong_api/target/jinrong_api/WEB-INF/classes/com/chinasoft/jinrong_api/service/IUserService.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/jinrong_api/target/jinrong_api/WEB-INF/classes/com/chinasoft/jinrong_api/service/impl/UserServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/jinrong_api/target/jinrong_api/WEB-INF/classes/com/chinasoft/jinrong_api/service/impl/UserServiceImpl.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/jinrong_api/target/jinrong_api/WEB-INF/classes/mybatis/mapper/UserMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/jinrong_api/target/jinrong_api/WEB-INF/classes/mybatis/mapper/UserMapper.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/jinrong_app/public/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/jinrong_app/public/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/jinrong_app/src/App.vue" beforeDir="false" afterPath="$PROJECT_DIR$/jinrong_app/src/App.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/jinrong_api/target/jinrong_api/WEB-INF/classes/spring-mvc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/jinrong_api/target/jinrong_api/WEB-INF/classes/spring-mvc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/jinrong_app/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/jinrong_app/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/jinrong_app/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/jinrong_app/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/jinrong_app/src/views/LoginPage.vue" beforeDir="false" afterPath="$PROJECT_DIR$/jinrong_app/src/views/LoginPage.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/jinrong_app/src/views/indexPage.vue" beforeDir="false" afterPath="$PROJECT_DIR$/jinrong_app/src/views/indexPage.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/jinrong_app/vue.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/jinrong_app/vue.config.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -25277,8 +25280,9 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Class" />
         <option value="Vue Single File Component" />
+        <option value="JavaScript File" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -25438,6 +25442,7 @@
       <workItem from="1612331669839" duration="15946000" />
       <workItem from="1612349247500" duration="392000" />
       <workItem from="1612400626290" duration="11393000" />
+      <workItem from="1612412777062" duration="15709000" />
     </task>
     <task id="LOCAL-00001" summary="Mr.Yi 2021.2.1 16:59 Web前后端分离综合小案例——双项目开发 第二次提交">
       <created>1612170224584</created>
@@ -25488,7 +25493,14 @@
       <option name="project" value="LOCAL" />
       <updated>1612346816449</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="Mr.Yi 2021.2.4 12:27 Web前后端分离综合小案例——双项目开发 第九次提交">
+      <created>1612413134034</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1612413134034</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -25519,21 +25531,22 @@
     <MESSAGE value="Mr.Yi 2021.2.3 11:31 Web前后端分离综合小案例——双项目开发 第六次提交" />
     <MESSAGE value="Mr.Yi 2021.2.3 15:45 Web前后端分离综合小案例——双项目开发 第七次提交" />
     <MESSAGE value="Mr.Yi 2021.2.3 18:01 Web前后端分离综合小案例——双项目开发 第八次提交" />
-    <option name="LAST_COMMIT_MESSAGE" value="Mr.Yi 2021.2.3 18:01 Web前后端分离综合小案例——双项目开发 第八次提交" />
+    <MESSAGE value="Mr.Yi 2021.2.4 12:27 Web前后端分离综合小案例——双项目开发 第九次提交" />
+    <option name="LAST_COMMIT_MESSAGE" value="Mr.Yi 2021.2.4 12:27 Web前后端分离综合小案例——双项目开发 第九次提交" />
   </component>
   <component name="WindowStateProjectService">
     <state x="365" y="0" key="#Project_Structure" timestamp="1612142616418">
       <screen x="0" y="0" width="1920" height="1032" />
     </state>
     <state x="365" y="0" key="#Project_Structure/0.0.1920.1032@0.0.1920.1032" timestamp="1612142616418" />
-    <state x="701" y="158" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1612160873797">
+    <state x="701" y="158" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1612429287831">
       <screen x="0" y="0" width="1920" height="1032" />
     </state>
-    <state x="701" y="158" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1032@0.0.1920.1032" timestamp="1612160873797" />
-    <state x="784" y="252" key="#com.intellij.ide.util.MemberChooser" timestamp="1612410208897">
+    <state x="701" y="158" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1032@0.0.1920.1032" timestamp="1612429287831" />
+    <state x="784" y="252" key="#com.intellij.ide.util.MemberChooser" timestamp="1612429760040">
       <screen x="0" y="0" width="1920" height="1032" />
     </state>
-    <state x="784" y="252" key="#com.intellij.ide.util.MemberChooser/0.0.1920.1032@0.0.1920.1032" timestamp="1612410208897" />
+    <state x="784" y="252" key="#com.intellij.ide.util.MemberChooser/0.0.1920.1032@0.0.1920.1032" timestamp="1612429760040" />
     <state x="623" y="199" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1612266997948">
       <screen x="0" y="0" width="1920" height="1032" />
     </state>
@@ -25550,54 +25563,54 @@
       <screen x="0" y="0" width="1920" height="1032" />
     </state>
     <state x="578" y="143" key="Github.UntrackedFilesDialog/0.0.1920.1032@0.0.1920.1032" timestamp="1612150911544" />
-    <state width="1550" height="372" key="GridCell.Tab.0.bottom" timestamp="1612412611476">
+    <state width="1550" height="389" key="GridCell.Tab.0.bottom" timestamp="1612430444580">
       <screen x="0" y="0" width="1920" height="1032" />
     </state>
-    <state width="1550" height="372" key="GridCell.Tab.0.bottom/0.0.1920.1032@0.0.1920.1032" timestamp="1612412611476" />
-    <state width="1550" height="372" key="GridCell.Tab.0.center" timestamp="1612412611476">
+    <state width="1550" height="389" key="GridCell.Tab.0.bottom/0.0.1920.1032@0.0.1920.1032" timestamp="1612430444580" />
+    <state width="1550" height="389" key="GridCell.Tab.0.center" timestamp="1612430444580">
       <screen x="0" y="0" width="1920" height="1032" />
     </state>
-    <state width="1550" height="372" key="GridCell.Tab.0.center/0.0.1920.1032@0.0.1920.1032" timestamp="1612412611476" />
-    <state width="1550" height="372" key="GridCell.Tab.0.left" timestamp="1612412611475">
+    <state width="1550" height="389" key="GridCell.Tab.0.center/0.0.1920.1032@0.0.1920.1032" timestamp="1612430444580" />
+    <state width="1550" height="389" key="GridCell.Tab.0.left" timestamp="1612430444579">
       <screen x="0" y="0" width="1920" height="1032" />
     </state>
-    <state width="1550" height="372" key="GridCell.Tab.0.left/0.0.1920.1032@0.0.1920.1032" timestamp="1612412611475" />
-    <state width="1550" height="372" key="GridCell.Tab.0.right" timestamp="1612412611476">
+    <state width="1550" height="389" key="GridCell.Tab.0.left/0.0.1920.1032@0.0.1920.1032" timestamp="1612430444579" />
+    <state width="1550" height="389" key="GridCell.Tab.0.right" timestamp="1612430444580">
       <screen x="0" y="0" width="1920" height="1032" />
     </state>
-    <state width="1550" height="372" key="GridCell.Tab.0.right/0.0.1920.1032@0.0.1920.1032" timestamp="1612412611476" />
-    <state width="1550" height="372" key="GridCell.Tab.1.bottom" timestamp="1612412611476">
+    <state width="1550" height="389" key="GridCell.Tab.0.right/0.0.1920.1032@0.0.1920.1032" timestamp="1612430444580" />
+    <state width="1550" height="389" key="GridCell.Tab.1.bottom" timestamp="1612430444580">
       <screen x="0" y="0" width="1920" height="1032" />
     </state>
-    <state width="1550" height="372" key="GridCell.Tab.1.bottom/0.0.1920.1032@0.0.1920.1032" timestamp="1612412611476" />
-    <state width="1550" height="372" key="GridCell.Tab.1.center" timestamp="1612412611476">
+    <state width="1550" height="389" key="GridCell.Tab.1.bottom/0.0.1920.1032@0.0.1920.1032" timestamp="1612430444580" />
+    <state width="1550" height="389" key="GridCell.Tab.1.center" timestamp="1612430444580">
       <screen x="0" y="0" width="1920" height="1032" />
     </state>
-    <state width="1550" height="372" key="GridCell.Tab.1.center/0.0.1920.1032@0.0.1920.1032" timestamp="1612412611476" />
-    <state width="1550" height="372" key="GridCell.Tab.1.left" timestamp="1612412611476">
+    <state width="1550" height="389" key="GridCell.Tab.1.center/0.0.1920.1032@0.0.1920.1032" timestamp="1612430444580" />
+    <state width="1550" height="389" key="GridCell.Tab.1.left" timestamp="1612430444580">
       <screen x="0" y="0" width="1920" height="1032" />
     </state>
-    <state width="1550" height="372" key="GridCell.Tab.1.left/0.0.1920.1032@0.0.1920.1032" timestamp="1612412611476" />
-    <state width="1550" height="372" key="GridCell.Tab.1.right" timestamp="1612412611476">
+    <state width="1550" height="389" key="GridCell.Tab.1.left/0.0.1920.1032@0.0.1920.1032" timestamp="1612430444580" />
+    <state width="1550" height="389" key="GridCell.Tab.1.right" timestamp="1612430444580">
       <screen x="0" y="0" width="1920" height="1032" />
     </state>
-    <state width="1550" height="372" key="GridCell.Tab.1.right/0.0.1920.1032@0.0.1920.1032" timestamp="1612412611476" />
-    <state width="1550" height="372" key="GridCell.Tab.2.bottom" timestamp="1612412611476">
+    <state width="1550" height="389" key="GridCell.Tab.1.right/0.0.1920.1032@0.0.1920.1032" timestamp="1612430444580" />
+    <state width="1550" height="389" key="GridCell.Tab.2.bottom" timestamp="1612430444580">
       <screen x="0" y="0" width="1920" height="1032" />
     </state>
-    <state width="1550" height="372" key="GridCell.Tab.2.bottom/0.0.1920.1032@0.0.1920.1032" timestamp="1612412611476" />
-    <state width="1550" height="372" key="GridCell.Tab.2.center" timestamp="1612412611476">
+    <state width="1550" height="389" key="GridCell.Tab.2.bottom/0.0.1920.1032@0.0.1920.1032" timestamp="1612430444580" />
+    <state width="1550" height="389" key="GridCell.Tab.2.center" timestamp="1612430444580">
       <screen x="0" y="0" width="1920" height="1032" />
     </state>
-    <state width="1550" height="372" key="GridCell.Tab.2.center/0.0.1920.1032@0.0.1920.1032" timestamp="1612412611476" />
-    <state width="1550" height="372" key="GridCell.Tab.2.left" timestamp="1612412611476">
+    <state width="1550" height="389" key="GridCell.Tab.2.center/0.0.1920.1032@0.0.1920.1032" timestamp="1612430444580" />
+    <state width="1550" height="389" key="GridCell.Tab.2.left" timestamp="1612430444580">
       <screen x="0" y="0" width="1920" height="1032" />
     </state>
-    <state width="1550" height="372" key="GridCell.Tab.2.left/0.0.1920.1032@0.0.1920.1032" timestamp="1612412611476" />
-    <state width="1550" height="372" key="GridCell.Tab.2.right" timestamp="1612412611476">
+    <state width="1550" height="389" key="GridCell.Tab.2.left/0.0.1920.1032@0.0.1920.1032" timestamp="1612430444580" />
+    <state width="1550" height="389" key="GridCell.Tab.2.right" timestamp="1612430444580">
       <screen x="0" y="0" width="1920" height="1032" />
     </state>
-    <state width="1550" height="372" key="GridCell.Tab.2.right/0.0.1920.1032@0.0.1920.1032" timestamp="1612412611476" />
+    <state width="1550" height="389" key="GridCell.Tab.2.right/0.0.1920.1032@0.0.1920.1032" timestamp="1612430444580" />
     <state width="1200" height="185" key="GridCell.Tab.3.bottom" timestamp="1612142824896">
       <screen x="0" y="0" width="1920" height="1032" />
     </state>
@@ -25622,13 +25635,13 @@
       <screen x="0" y="0" width="1920" height="1032" />
     </state>
     <state x="313" y="0" key="SettingsEditor/0.0.1920.1032@0.0.1920.1032" timestamp="1612146848927" />
-    <state x="359" y="151" key="Vcs.Push.Dialog.v2" timestamp="1612346878490">
+    <state x="359" y="151" key="Vcs.Push.Dialog.v2" timestamp="1612414559344">
       <screen x="0" y="0" width="1920" height="1032" />
     </state>
-    <state x="359" y="151" key="Vcs.Push.Dialog.v2/0.0.1920.1032@0.0.1920.1032" timestamp="1612346878490" />
-    <state x="551" y="0" width="840" height="1030" key="search.everywhere.popup" timestamp="1612401454859">
+    <state x="359" y="151" key="Vcs.Push.Dialog.v2/0.0.1920.1032@0.0.1920.1032" timestamp="1612414559344" />
+    <state x="551" y="0" width="840" height="1030" key="search.everywhere.popup" timestamp="1612427185430">
       <screen x="0" y="0" width="1920" height="1032" />
     </state>
-    <state x="551" y="0" width="840" height="1030" key="search.everywhere.popup/0.0.1920.1032@0.0.1920.1032" timestamp="1612401454859" />
+    <state x="551" y="0" width="840" height="1030" key="search.everywhere.popup/0.0.1920.1032@0.0.1920.1032" timestamp="1612427185430" />
   </component>
 </project>

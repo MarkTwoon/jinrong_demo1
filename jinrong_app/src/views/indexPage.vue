@@ -195,6 +195,7 @@
 
     import  cpImg from  '../assets/upload/288d9986-aae3-4aff-83b0-d0d9b921ab6a.jpg';
     import axios from 'axios/dist/axios.min.js';
+    axios.defaults.withCredentials=true;
     import qs from 'qs/dist/qs.js';
     export default {
         name: "indexPage",
@@ -224,7 +225,7 @@
                 _this.data1=data.data.indexData1;
                 _this.data2=data.data.indexData2;
                 _this.userData=data.data.userData;
-               /* console.log(  _this.userData);*/
+                 console.log(  _this.userData);
 
                 _this.userName=_this.userData==null?'暂未登录':_this.userData.userName;
                 _this.couponImg=require('../assets/upload/'+_this.data2.couponImg);

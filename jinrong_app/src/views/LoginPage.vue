@@ -99,9 +99,8 @@
                     <span class="span-must-input text-red">* 必填</span>
                 </div>
             </form>
-            <div class="submit-btn"  style="width:40%;margin-top:0px; margin-left:60px;">
+            <div class="submit-btn"   style="width:40%;margin-top:0px; margin-left:60px;">
                 <a @click="formSubmit()">立即登录</a>
-
             </div>
             <div class="submit-btn"    style="margin-right:6px;margin-top:-39px; width:30%;float:right;">
                 <a   @click="goToDiv('registerDiv')">注册</a>
@@ -114,13 +113,20 @@
 
 <script>
     import axios from 'axios/dist/axios.min.js';
+    axios.defaults.withCredentials=true;
     import qs from 'qs/dist/qs.js';
-  import "../assets/js/inputCheck/jquery.validate.min.js";
+    /*一般的Vue轻量级插件 在vue组件中 外联 按需引入即可*/
+    import  $cookies from 'vue-cookies';
+    //const Base64=require('js-base64').Base64;
+    import jm from "../assets/js/aes/jiami.js";
+    import "../assets/js/inputCheck/jquery.validate.min.js";
   import  "../assets/js/inputCheck/messages_zh.js";
+
     export default {
         name: "LoginPage",
         data(){
             return{
+                isDisable:false,
                 display:this.$route.query.display,
                 cityName:this.$route.query.cityName,
                 registerFromData:{
@@ -130,8 +136,10 @@
                     cityId:this.$route.query.cityId,
                 },
                 loginFromData:{
-                     userPhone:'',
-                    userPassWord:'',
+                    /* userPhone:$cookies.get("userPhone")==null?'':Base64.decode($cookies.get("userPhone")),
+                    userPassWord:$cookies.get("userPassWord")==null?'':Base64.decode($cookies.get("userPassWord")),*/
+                    userPhone:$cookies.get("userPhone")==null?'':jm.jiemi($cookies.get("userPhone")),
+                    userPassWord:$cookies.get("userPassWord")==null?'':jm.jiemi($cookies.get("userPassWord")),
                     cityId:this.$route.query.cityId,
                 }
             }
@@ -150,49 +158,68 @@
             },
             goToDiv:function(display){
                 this.display=display;
+
                 const _this=this;
                 $(function () {
                     _this.validFrom(_this.display);
                 })
             },
-            formSubmit:function(){
-           /* console.log(this.validFrom(this.display).form());*/
-                const _this=this;
-                if(this.validFrom(this.display).form()){
-                   let formUrl=this.display==="loginDiv"?"checkOrLoginUserMain":"registerUserOne";
-                    let formData=this.display==="loginDiv"?this.loginFromData
-                        :this.registerFromData;
-                   /* console.log(this.loginFromData);
-                    console.log(typeof this.loginFromData);*/
-                   axios.post('/api/'+formUrl,qs.stringify(formData)).then(function (response) {
-                    let data=response.data;
-                    if(data.code===200){
-                        if(_this.display==='loginDiv'){
-                            if(data.data){
-                                _this.layMsg("登录成功！",6);
-                            }else {
-                                _this.layMsg("抱歉，登录失败,请检查账户密码后重新登录", 5);
-                            }
-                        }else{
-                            if(data.data){
-                                _this.layMsg("注册成功！",6);
-                            }else {
-                                _this.layMsg("抱歉，账户注册失败,请检查录入数据后重新注册", 5);
-                            }
+            formSubmit:function() {
+                const _this = this;
+                if (this.validFrom(this.display).form()) {
+                    let formUrl = this.display === "loginDiv" ? "checkOrLoginUserMain" : "registerUserOne";
+                    let formData = this.display === "loginDiv" ? this.loginFromData
+                        : this.registerFromData;
+                      if(_this.isDisable){
+                       _this.layMsg("当前操作过于频繁！请待会再操作",5);
+                   }else{
+                    axios.post('/api/' + formUrl, qs.stringify(formData)).then(function (response) {
+                        let data = response.data;
+                        if (data.code === 200) {
+                            if (_this.display === 'loginDiv') {
+                                if (data.data) {
+                                    _this.isDisable = !_this.isDisable;
+                                    _this.layMsg("登录成功！", 6);
+                                    /* 前端数据 对登录信息的cookie缓存
+                                    * */
+                                    /*$cookies.set("userPhone",Base64.encode(_this.loginFromData.userPhone),'7d');
+                                    $cookies.set("userPassWord",Base64.encode(_this.loginFromData.userPassWord),'7d');*/
+                                    $cookies.set("userPhone",jm.jiami(_this.loginFromData.userPhone),'7d');
+                                    $cookies.set("userPassWord",jm.jiami(_this.loginFromData.userPassWord),'7d');
+                                   // alert(_this.cityId);
+                                    _this.$router.push('#/indexPage?cityId='+_this.loginFromData.cityId);
+                                    setTimeout(() => {
+                                        _this.isDisable = !_this.isDisable;
+                                    }, 8000);
+                                } else {
+                                    _this.layMsg("抱歉，登录失败,请检查账户密码后重新登录", 5);
+                                }
+                            } else {
+                                if (data.data) {
+                                    _this.isDisable = !_this.isDisable;
+                                    _this.layMsg("注册成功！", 6);
+                                    _this.registerFromData.userPhone='';
+                                    _this.$router.push('#/indexPage?cityId='+_this.registerFromData.cityId);
+                                    setTimeout(() => {
+                                        _this.isDisable = !_this.isDisable;
+                                    }, 8000);
+                                } else {
+                                    _this.layMsg("抱歉，账户注册失败,请检查录入数据后重新注册", 5);
+                                }
                             }
 
-                    }else{
-                        console.log(data.code+">>>>>>");
-                        _this.layMsg(data.message,5);
-                    }
-
+                        } else {
+                            _this.layMsg(data.message, 5);
+                        }
+                        /*执行 axios的错误回调函数 失败回调函数中存在err形式参数
+                      * 然后返回的异步json  为err.response.data*/
                     }).catch(function (err) {
-                         _this.layMsg(err.response.data.message,5);
-                   });
-                }else{
-                    this.layMsg('抱歉，填写表单数据不完整',5);
+                        _this.layMsg(err.response.data.message, 5);
+                    });
                 }
-
+            }else {
+                    this.layMsg('抱歉，填写表单数据不完整', 5);
+                }
             },
             validFrom:function (display) {
                 /*自定义 验证规范  定义正则演示*/

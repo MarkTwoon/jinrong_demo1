@@ -23,9 +23,8 @@ public class UserController {
    private IUserService userService;
 
   @RequestMapping("/test")
-   public Object test(@RequestParam Map<String,Object> map){
-System.out.println(map);
-     System.out.println(map);
+    public Object test(@RequestParam Map<String,Object> map){
+
      return  new ReturnData(StatusCode.REQUEST_SUCCESS,
              userService.selectGoodsAll(map.get("goodsId")+""),"后端数据交互正常！");
   }
@@ -61,6 +60,7 @@ System.out.println(map);
         data.put("indexData2",userService.selectCityCouponByCityId(map).get(0));*/
         /*打开主页面 则进行异步交互 判断是否已登录。
         * 若未登录 则session之中健值数据为null 返回前端页面  要求登录或注册*/
+        System.out.println(request.getSession().getAttribute(FinalMsg.SESSION_USERDATA)+">>>>>>>>");
         data.put("userData",
                 request.getSession().getAttribute(FinalMsg.SESSION_USERDATA));
       return  new ReturnData(StatusCode.REQUEST_SUCCESS,data,"检索城市活动数据信息正常！");
@@ -101,6 +101,8 @@ System.out.println(map);
         if(list.size()>0) {
             /*如果是提交登录的情况下 有结果集 session记录 登录用户*/
             if (map.containsKey("userPassWord")) {
+                System.out.println(list.get(0)+">>>>>>>>22");
+                System.out.println(list.get(0)+">>>>>>>>22");
                 request.getSession().setAttribute(FinalMsg.SESSION_USERDATA,list.get(0));
             }
             msg=true;
