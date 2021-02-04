@@ -19,7 +19,8 @@
                     <input type="hidden" name="page" value="4">-->
                     <div class="input1" style="margin-bottom: 4px;">
                         <span class="col1">手机：</span>
-                        <input type="text" name="userRegisterPhone" id="userRegisterPhone" />
+                        <input type="text" name="userRegisterPhone" id="userRegisterPhone"
+                        v-model="registerFromData.userPhone" />
                         <span class="text-red">* 必填</span>
                     </div>
                     <div class="input1" style="line-height: 15px;height: 15px">
@@ -35,13 +36,15 @@
                     <!--确认密码-->
                     <div class="input1">
                         <span class="col1" style="line-height: 20px;">确认<br/>密码：</span>
-                        <input type="text" id="userRegisterPassWordTwo" name="userRegisterPassWordTwo"/>
+                        <input type="text" id="userRegisterPassWordTwo" name="userRegisterPassWordTwo"
+                               v-model="registerFromData.userPassWord"/>
                         <span class="text-red">* 必填</span>
                     </div>
                     <!--姓名-->
                     <div class="input1">
                         <span class="col1">姓名：</span>
-                        <input type="text" name="userRegisterName" id="userRegisterName" />
+                        <input type="text" name="userRegisterName" id="userRegisterName"
+                               v-model="registerFromData.userName"/>
                         <span class="text-red">* 必填</span>
                     </div>
                     <!--邮箱-->
@@ -53,7 +56,7 @@
                 </div>
             </form>
             <div class="submit-btn" style="width:40%;margin-top:0px; margin-left:37px;">
-                <a @click="formSubmit()">立即提交</a>
+                <a @click="formSubmit()">立即注册</a>
                 <!--  &nbsp;&nbsp;&nbsp;&nbsp;<a style="color:gray;float:right;" onclick="insertUser();">已有账户？</a>-->
                 <!-- <a style="color:gray;float:right;" onclick="history.go(-1)">返回</a>-->
             </div>
@@ -81,7 +84,7 @@
                 <input type="hidden" name="page" value="4">-->
                 <div class="input1" style="margin-bottom: 4px;">
                     <span class="col1">手机：</span>                                       <!-- id编号, 检查参数类型，登录或注册类型  -->
-                    <input type="text" name="userLoginPhone" value="" placeholder="请输入手机号"    id="userLoginPhone"/>
+                    <input type="text" name="userLoginPhone"   placeholder="请输入手机号"    id="userLoginPhone" v-model="loginFromData.userPhone"  />
                     <span class="text-red">* 必填</span>
                 </div>
                 <div class="input1" style="line-height: 15px;height: 15px">
@@ -91,13 +94,13 @@
                 <!--密码-->
                 <div class="input1">
                     <span class="col1">密码：</span>
-                    <input type="password" name="userLoginPassWord" id="userLoginPassWord" placeholder="请输入登录密码" value=""  />
+                    <input type="password" name="userLoginPassWord" id="userLoginPassWord"  v-model="loginFromData.userPassWord"
+                           placeholder="请输入登录密码"   />
                     <span class="span-must-input text-red">* 必填</span>
                 </div>
-
             </form>
             <div class="submit-btn"  style="width:40%;margin-top:0px; margin-left:60px;">
-                <a @click="formSubmit()">立即提交</a>
+                <a @click="formSubmit()">立即登录</a>
 
             </div>
             <div class="submit-btn"    style="margin-right:6px;margin-top:-39px; width:30%;float:right;">
@@ -120,6 +123,17 @@
             return{
                 display:this.$route.query.display,
                 cityName:this.$route.query.cityName,
+                registerFromData:{
+                    userPhone:'',
+                    userPassWord:'',
+                    userName:'',
+                    cityId:this.$route.query.cityId,
+                },
+                loginFromData:{
+                     userPhone:'',
+                    userPassWord:'',
+                    cityId:this.$route.query.cityId,
+                }
             }
         },mounted() {
             const _this=this;
@@ -129,9 +143,9 @@
             })
 
         },methods:{
-            layMsg:function(msg){
+            layMsg:function(msg,icoInt){
                 layui.use(['laypage','layer','laydate'],function () {
-                    layer.msg(msg, {icon: 6,time:2000, shade:0.4});
+                    layer.msg(msg, {icon: icoInt,time:2000, shade:0.4});
                 });
             },
             goToDiv:function(display){
@@ -142,7 +156,43 @@
                 })
             },
             formSubmit:function(){
-            console.log(this.validFrom(this.display).form());
+           /* console.log(this.validFrom(this.display).form());*/
+                const _this=this;
+                if(this.validFrom(this.display).form()){
+                   let formUrl=this.display==="loginDiv"?"checkOrLoginUserMain":"registerUserOne";
+                    let formData=this.display==="loginDiv"?this.loginFromData
+                        :this.registerFromData;
+                   /* console.log(this.loginFromData);
+                    console.log(typeof this.loginFromData);*/
+                   axios.post('/api/'+formUrl,qs.stringify(formData)).then(function (response) {
+                    let data=response.data;
+                    if(data.code===200){
+                        if(_this.display==='loginDiv'){
+                            if(data.data){
+                                _this.layMsg("登录成功！",6);
+                            }else {
+                                _this.layMsg("抱歉，登录失败,请检查账户密码后重新登录", 5);
+                            }
+                        }else{
+                            if(data.data){
+                                _this.layMsg("注册成功！",6);
+                            }else {
+                                _this.layMsg("抱歉，账户注册失败,请检查录入数据后重新注册", 5);
+                            }
+                            }
+
+                    }else{
+                        console.log(data.code+">>>>>>");
+                        _this.layMsg(data.message,5);
+                    }
+
+                    }).catch(function (err) {
+                         _this.layMsg(err.response.data.message,5);
+                   });
+                }else{
+                    this.layMsg('抱歉，填写表单数据不完整',5);
+                }
+
             },
             validFrom:function (display) {
                 /*自定义 验证规范  定义正则演示*/
@@ -183,7 +233,7 @@
                             /*自定义 验证规则 remote为axjx检测 异步交互方式*/
                             remote: {
                                 type: "post",
-                                url: "api/checkUserMain",
+                                url: "/api/checkOrLoginUserMain",
                                 data: {
                                     userPhone: function() {
                                         return $("#userLoginPhone").val();
@@ -196,9 +246,11 @@
                                       if (jsondata.data)
                                           return true;
                                       else
+                                          /*只有remote 自定义检查异步回调为false时
+                                          * 才出现messages 输入框异常提示信息*/
                                           return false;
                                   }else{
-                                      _this.layMsg(jsondata.message);
+                                      _this.layMsg(jsondata.message,6);
                                       return false;
                                   }
                                   }
@@ -214,7 +266,7 @@
                         userLoginPhone: {
                             required: "请输入登录用户名",
                             minlength: "手机号长度不能小于 11 位",
-                            remote: "用户名不存在",
+                            remote: "登录用户名不存在",
                         },
                         userLoginPassWord: {
                             required: "请输入登录密码",
@@ -250,7 +302,34 @@
                                 /*表示为最小长度 需要达到*/
                                 minlength: 11,
                                 /*自定义 验证规则*/
-                                checkUserRegisterPhone: true,
+                              /*  checkUserRegisterPhone: true,*/
+                                remote: {
+                                    type: "post",
+                                    url: "/api/checkOrLoginUserMain",
+                                    data: {
+                                        userPhone: function() {
+                                            return $("#userRegisterPhone").val();
+                                        }
+                                    },
+                                    dataType: "json",
+                                    /*异步交互 成功返回 回调函数*/
+                                    dataFilter: function(data, type) {
+                                        const jsondata=JSON.parse(data);
+                                        if(jsondata.code===200){
+                                            if (!jsondata.data)
+                                                return true;
+                                            else
+                                                /*只有remote 自定义检查异步回调为false时
+                                                * 才出现messages 输入框异常提示信息*/
+                                                return false;
+                                        }else{
+                                            _this.layMsg(jsondata.message,6);
+                                            return false;
+                                        }
+                                    }
+
+                                }
+
                             },
                             userRegisterPassWord: {
                                 required: true,
@@ -270,6 +349,7 @@
                             userRegisterPhone: {
                                 required: "请输入注册用户名",
                                 minlength: "手机号长度不能小于 11 位",
+                                remote:"注册用户名已存在",
                             },
                             userRegisterPassWord: {
                                 required: "请输入注册密码",

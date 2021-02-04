@@ -2,10 +2,11 @@
   
   <router-view/>
 </template>
-<style  >
+<style >
   .error{
     color: red;
   }
 </style>
+
 
 

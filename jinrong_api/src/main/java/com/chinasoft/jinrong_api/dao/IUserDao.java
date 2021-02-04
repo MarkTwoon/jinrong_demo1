@@ -15,4 +15,5 @@ public List<Map<String,Object>>  selectSuccessUserList(Map<String,Object> map);
 public List<Map<String,Object>>  selectBusinessTypeList();
 public List<Map<String,Object>> ActivitiesCouponListToIndex(Map<String,Object> map);
 public List<Map<String,Object>> selectUserNameAndPassWord(Map<String,Object> map);
+public boolean insertUserMain(Map<String,Object> map);
 }

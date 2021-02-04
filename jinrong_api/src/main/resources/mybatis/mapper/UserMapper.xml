@@ -111,4 +111,13 @@ tu.USER_IMG  as userImg
  and tu.USER_PASSWORD=#{userPassWord}
  </if>
 </select>
+
+    <insert id="insertUserMain" parameterType="map"
+            flushCache="true">
+        insert into tb_user values(
+        (SELECT * FROM (SELECT MAX(USER_ID)+1 from tb_user ) as c
+),#{userName},#{userPhone},#{cityId},'待完善',#{userPassWord},
+(SELECT COUPON_ID from tb_coupon where CITY_ID=#{cityId}),'男','待完善','待上传')
+    </insert>
+
 </mapper>

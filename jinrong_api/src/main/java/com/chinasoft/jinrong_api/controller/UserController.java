@@ -91,12 +91,13 @@ System.out.println(map);
       return new ReturnData(StatusCode.REQUEST_SUCCESS,data,"查询商家类型 及优惠券数据成功");
     }
 
-    @RequestMapping(value = "/checkUserMain",method = RequestMethod.POST,params = {"userPhone"})
+    @RequestMapping(value = "/checkOrLoginUserMain",method = RequestMethod.POST,params = {"userPhone"})
     public Object checkUserMain(HttpServletRequest request,
                                 @RequestParam Map<String,Object> map){
         List<Map<String,Object>> list=userService.selectUserNameAndPassWord(map);
           /*登录又分2块 表单验证与提交登录*/
         boolean msg=false;
+
         if(list.size()>0) {
             /*如果是提交登录的情况下 有结果集 session记录 登录用户*/
             if (map.containsKey("userPassWord")) {
@@ -107,5 +108,21 @@ System.out.println(map);
             msg=false;
         }
     return new ReturnData(StatusCode.REQUEST_SUCCESS,msg,"查询用户个人信息成功");
+    }
+
+    @RequestMapping(value = "/registerUserOne",method = RequestMethod.POST,
+            params = {"userPhone","userPassWord"})
+    public Object registerUserOne(HttpServletRequest request,@RequestParam Map<String,Object> map){
+       // System.out.println(userService.insertUserMain(map));
+        boolean msg=false;
+        if(userService.insertUserMain(map)){
+            if (map.containsKey("userPassWord")) {
+                request.getSession().setAttribute(FinalMsg.SESSION_USERDATA,map);
+            }
+            msg=true;
+        }else{
+            msg=false;
+        }
+        return new ReturnData(StatusCode.REQUEST_SUCCESS,msg,"用户新增成功");
     }
 }

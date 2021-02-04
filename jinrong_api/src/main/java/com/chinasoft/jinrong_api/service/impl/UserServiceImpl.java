@@ -54,4 +54,9 @@ public class UserServiceImpl implements IUserService {
     public List<Map<String, Object>> selectUserNameAndPassWord(Map<String, Object> map) {
         return userDao.selectUserNameAndPassWord(map);
     }
+
+    @Override
+    public boolean insertUserMain(Map<String, Object> map) {
+        return userDao.insertUserMain(map);
+    }
 }
