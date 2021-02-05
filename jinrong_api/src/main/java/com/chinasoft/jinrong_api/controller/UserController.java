@@ -94,17 +94,19 @@ public class UserController {
         List<Map<String,Object>> list=userService.selectUserNameAndPassWord(map);
           /*登录又分2块 表单验证与提交登录*/
         boolean msg=false;
-
+      Map<String,Object> map1=new HashMap<String,Object>();
         if(list.size()>0) {
             /*如果是提交登录的情况下 有结果集 session记录 登录用户*/
+            map1=list.get(0);
             if (map.containsKey("userPassWord")) {
-                request.getSession().setAttribute(FinalMsg.SESSION_USERDATA,list.get(0));
+                request.getSession().setAttribute(FinalMsg.SESSION_USERDATA,map1);
             }
             msg=true;
         }else{
             msg=false;
         }
-    return new ReturnData(StatusCode.REQUEST_SUCCESS,msg,"查询用户个人信息成功");
+        map1.put("msg",msg);
+    return new ReturnData(StatusCode.REQUEST_SUCCESS,map1,"查询用户个人信息成功");
     }
 
     @RequestMapping(value = "/registerUserOne",method = RequestMethod.POST,
@@ -119,6 +121,7 @@ public class UserController {
         }else{
             msg=false;
         }
+        /*在异步返回数据时 尽量返回复合数据容器类型*/
         return new ReturnData(StatusCode.REQUEST_SUCCESS,msg,"用户新增成功");
     }
 }

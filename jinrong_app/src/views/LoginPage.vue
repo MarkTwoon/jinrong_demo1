@@ -141,6 +141,7 @@
                     userPhone:$cookies.get("userPhone")==null?'':jm.jiemi($cookies.get("userPhone")),
                     userPassWord:$cookies.get("userPassWord")==null?'':jm.jiemi($cookies.get("userPassWord")),
                     cityId:this.$route.query.cityId,
+
                 }
             }
         },mounted() {
@@ -177,8 +178,10 @@
                         let data = response.data;
                         if (data.code === 200) {
                             if (_this.display === 'loginDiv') {
-                                if (data.data) {
+                                if (data.data.msg) {
                                     _this.isDisable = !_this.isDisable;
+                                   /* _this.loginFromData.userName=data.data.userName;
+                                    _this.loginFromData.userId=data.data.userId;*/
                                     _this.layMsg("登录成功！", 6);
                                     /* 前端数据 对登录信息的cookie缓存
                                     * */
@@ -186,13 +189,14 @@
                                     $cookies.set("userPassWord",Base64.encode(_this.loginFromData.userPassWord),'7d');*/
                                     $cookies.set("userPhone",jm.jiami(_this.loginFromData.userPhone),'7d');
                                     $cookies.set("userPassWord",jm.jiami(_this.loginFromData.userPassWord),'7d');
-
-                                    sessionStorage.setItem("userData",JSON.stringify(_this.loginFromData));
-
+                                    /*使用Vue本身自带的 sessionStarage关键字
+                                    处理数据的存储问题
+                                    setItem*/
+                                    sessionStorage.setItem("userData",jm.jiami(JSON.stringify(data.data)));
                                     _this.$router.push('#/indexPage?cityId='+_this.loginFromData.cityId);
                                     setTimeout(() => {
                                         _this.isDisable = !_this.isDisable;
-                                    }, 8000);
+                                    }, 5000);
                                 } else {
                                     _this.layMsg("抱歉，登录失败,请检查账户密码后重新登录", 5);
                                 }
@@ -201,12 +205,11 @@
                                     _this.isDisable = !_this.isDisable;
                                     _this.layMsg("注册成功！", 6);
                                     _this.registerFromData.userPhone='';
-                                    sessionStorage.setItem("userData",JSON.stringify(_this.registerFromData));
-
+                                    sessionStorage.setItem("userData",jm.jiami(JSON.stringify(_this.registerFromData)));
                                     _this.$router.push('#/indexPage?cityId='+_this.registerFromData.cityId);
                                     setTimeout(() => {
                                         _this.isDisable = !_this.isDisable;
-                                    }, 8000);
+                                    }, 5000);
                                 } else {
                                     _this.layMsg("抱歉，账户注册失败,请检查录入数据后重新注册", 5);
                                 }
@@ -274,7 +277,7 @@
                                 dataFilter: function(data, type) {
                                     const jsondata=JSON.parse(data);
                                   if(jsondata.code===200){
-                                      if (jsondata.data)
+                                      if (jsondata.data.msg)
                                           return true;
                                       else
                                           /*只有remote 自定义检查异步回调为false时
@@ -347,7 +350,7 @@
                                     dataFilter: function(data, type) {
                                         const jsondata=JSON.parse(data);
                                         if(jsondata.code===200){
-                                            if (!jsondata.data)
+                                            if (!jsondata.data.msg)
                                                 return true;
                                             else
                                                 /*只有remote 自定义检查异步回调为false时

@@ -36,6 +36,10 @@ export default {
     // 解密函數
     jiemi (word) {
         console.log('传入的密文：', word)
+        /*在未登录的情况下 不需要前端信息解密*/
+        if(word===null || word===''){
+            return null;
+        }else{
         let key = cryptoJs.enc.Hex.parse(keyOne)
         let dec = cryptoJs.AES.decrypt(cryptoJs.format.Hex.parse(word), key, {
             // vi: vi
@@ -44,5 +48,6 @@ export default {
         })
         let decData = cryptoJs.enc.Utf8.stringify(dec)
         return decData
+    }
     }
 }

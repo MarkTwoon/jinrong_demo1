@@ -59,7 +59,7 @@
             <img src="../assets/images/btn.png" alt="" width="200" style="width:100%; float: left;" @click="goToLogin('registerDiv')">
         </div>
         <div class="btn" v-else>
-            <img src="../assets/images/btn_pay.png" alt="" width="200" style="width:100%; float: left;" onclick="goToLogin('registerDiv');">
+            <img src="../assets/images/btn_pay.png" alt="" width="200" style="width:100%; float: left;" @click="goToPay()">
         </div>
     </div>
 
@@ -196,6 +196,8 @@
     import  cpImg from  '../assets/upload/288d9986-aae3-4aff-83b0-d0d9b921ab6a.jpg';
     import axios from 'axios/dist/axios.min.js';
     import qs from 'qs/dist/qs.js';
+    import jm from "../assets/js/aes/jiami.js";
+    //const jm=require('../assets/js/aes/jiami.js');
     export default {
         name: "indexPage",
         data(){
@@ -211,23 +213,26 @@
                 /*商家类型 与商品数据 对象*/
                 businessTypeList:'',
                 goodsList:'',
-                userData:JSON.parse(sessionStorage.getItem("userData")),
+                 userData:JSON.parse(jm.jiemi(sessionStorage.getItem("userData"))),
             }
         },
         mounted() {
             const _this=this;
-            console.log((typeof _this.userData == 'object')+">>>>>>>>>>>>");
-            axios.post('/api/indexPageMainData',qs.stringify({'cityId':_this.cityId})).then(function (response) {
+            console.log(_this.userData);
+
+            axios.post('/api/indexPageMainData',qs.stringify({
+                'cityId':_this.cityId,
+                'userId':_this.userData===null?'':_this.userData.userId})).then(function (response) {
             const data=response.data;
-            if(data.code==200){
-            //_this.couponImg=require(data.data.couponImg);
+            if(data.code===200){
                 _this.data1=data.data.indexData1;
                 _this.data2=data.data.indexData2;
-               /* _this.userData=data.data.userData;*/
-                 console.log(  _this.userData);
 
                 _this.userName=_this.userData==null?'暂未登录':_this.userData.userName;
                 _this.couponImg=require('../assets/upload/'+_this.data2.couponImg);
+                if(_this.userData!=null&&_this.data2.couponOldPrice<=_this.data2.couponLowPrice){
+                    alert('恭喜您已经到达底价记录，点击我去领取奖品！');
+                }
 
             }else{
                layui.use(['laypage','layer','laydate'],function () {
@@ -236,14 +241,22 @@
                            _this.$router.push('/');
                });
                })
-              /*  alert(data.message);*/
-                //console.log(data);
+
             }
             });
 
         setTimeout(_this.getWinUsers,500);
             setTimeout(_this.couponGoodsData(''),610);
         },methods:{
+            goToPay:function () {
+        if(this.userData!=null&&this.data2.couponOldPrice<=this.data2.couponLowPrice){
+            alert('恭喜您已经到达底价记录，点击我去领取奖品！');
+        }else{
+            layui.use(['laypage','layer','laydate'],function () {
+                layer.msg('还未到达领奖门槛，再接再厉哟！', {icon: 7,time:2000, shade:0.4});
+            });
+        }
+            },
             couponGoodsData:function(businessTypeId){
                 /*一个异步交互过程  返回2个list查询结果集 回调中注意区分
                 * DOM中  也需要2个v-for DOM迭代*/
@@ -251,7 +264,7 @@
                 /*先清除原有for迭代的DOM元素 再进行axios回调的新数据替换*/
                 this.goodsList='';
               axios.post('/api/businessTypeAndGoodsData',qs.stringify({'cityId':this.cityId,'businessTypeId':businessTypeId,'markId':this.markId})).then(function(response){
-                    if(_this.markId==1){
+                    if(_this.markId===1){
                         /*商家类型数据 在前端也只会赋值一次 迭代一次*/
                         _this.businessTypeList=response.data.data.businessTypeList;
                         _this.markId++;

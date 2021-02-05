@@ -37,7 +37,14 @@ SELECT  (select CITY_NAME from tb_city where CITY_ID=(tu.CITY_ID)) as cityName,c
     SELECT
 tcy.CITY_NAME as cityName,
 tcp.COUPON_IMG as couponImg,
-tcp.COUPON_OLDPRICE as couponOldPrice,
+<choose>
+   <when test="userId !='' and userId!=null ">
+   (select NOWPRICE_NUMBER from tb_nowprice
+   WHERE COUPON_ID=(tcp.COUPON_ID) AND USER_ID=#{userId} )
+     as couponOldPrice,
+   </when>
+<otherwise>tcp.COUPON_OLDPRICE as couponOldPrice,</otherwise>
+</choose>
 tcp.COUPON_LOWPRICE as couponLowPrice,
 tcp.COUPON_MAIN as couponMain
 from tb_coupon as tcp
@@ -114,10 +121,18 @@ tu.USER_IMG  as userImg
 
     <insert id="insertUserMain" parameterType="map"
             flushCache="true">
+
         insert into tb_user values(
         (SELECT * FROM (SELECT MAX(USER_ID)+1 from tb_user ) as c
-),#{userName},#{userPhone},#{cityId},'待完善',#{userPassWord},
-(SELECT COUPON_ID from tb_coupon where CITY_ID=#{cityId}),'男','待完善','待上传')
+        ),#{userName},#{userPhone},#{cityId},'待完善',#{userPassWord},
+(SELECT COUPON_ID from tb_coupon where CITY_ID=#{cityId}),'男','待完善','待上传');
+
+       insert into tb_nowprice values (
+       null,(select COUPON_OLDPRICE from tb_coupon
+        where CITY_ID=#{cityId} ),
+        (select max(USER_ID) from tb_user),(select COUPON_ID from tb_coupon
+        where CITY_ID=#{cityId})
+        );
     </insert>
 
 </mapper>
