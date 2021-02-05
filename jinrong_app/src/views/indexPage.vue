@@ -9,7 +9,7 @@
         <a class="fl"  v-if="userData == null "
            style="text-decoration: underline;margin-right: 16px; color: #666;" id="f1" @click="goToLogin('loginDiv')">会员登录<!--退出--></a>
         <a class="fl"  v-else
-           style="text-decoration: underline;margin-right: 16px; color: #666;" id="f2" onclick="goToLogin('loginDiv');">个人中心<!--退出--></a>
+           style="text-decoration: underline;margin-right: 16px; color: #666;" id="f2" @click="goToLogin('');">个人中心<!--退出--></a>
 
     </div>
     <div class="b">
@@ -189,6 +189,10 @@
     <div class="cR-btm" >
         <img src="../assets/images/btm-bg.png" alt="" width="750" style="width:100%; float: left;">
     </div>
+
+    <div id="tong" style="display: none;" @click="userPay()">
+        <img src="../assets/images/b9.jpg"  style="width: 100%;height: 100%;">
+    </div>
 </template>
 
 <script>
@@ -213,7 +217,7 @@
                 /*商家类型 与商品数据 对象*/
                 businessTypeList:'',
                 goodsList:'',
-                 userData:JSON.parse(jm.jiemi(sessionStorage.getItem("userData"))),
+                userData:JSON.parse(jm.jiemi(sessionStorage.getItem("userData"))),
             }
         },
         mounted() {
@@ -231,7 +235,19 @@
                 _this.userName=_this.userData==null?'暂未登录':_this.userData.userName;
                 _this.couponImg=require('../assets/upload/'+_this.data2.couponImg);
                 if(_this.userData!=null&&_this.data2.couponOldPrice<=_this.data2.couponLowPrice){
-                    alert('恭喜您已经到达底价记录，点击我去领取奖品！');
+                    layui.use(['laypage','layer','laydate'],function () {
+                    layer.open({
+                        type: 1,
+                        title: false,
+                        closeBtn: 0,
+                        offset: ['200px', '14px'],
+                        area: ['350px', '800px'],
+                        skin: 'layui-layer-nobg', //没有背景色
+                        shade:0.3,
+                        shadeClose: true,
+                        content: $('#tong')
+                    });
+                    })
                 }
 
             }else{
@@ -248,9 +264,24 @@
         setTimeout(_this.getWinUsers,500);
             setTimeout(_this.couponGoodsData(''),610);
         },methods:{
+            userPay:function(){
+                console.log('我是支付 -触发函数体');
+            },
             goToPay:function () {
         if(this.userData!=null&&this.data2.couponOldPrice<=this.data2.couponLowPrice){
-            alert('恭喜您已经到达底价记录，点击我去领取奖品！');
+            layui.use(['laypage','layer','laydate'],function () {
+                layer.open({
+                    type: 1,
+                    title: false,
+                    closeBtn: 0,
+                    offset: ['200px', '14px'],
+                    area: ['350px', '800px'],
+                    skin: 'layui-layer-nobg', //没有背景色
+                    shade:0.3,
+                    shadeClose: true,
+                    content: $('#tong')
+                });
+            })
         }else{
             layui.use(['laypage','layer','laydate'],function () {
                 layer.msg('还未到达领奖门槛，再接再厉哟！', {icon: 7,time:2000, shade:0.4});
@@ -303,6 +334,10 @@
                         +'&cityName='+this.data2.cityName;
                 }else{
                    /*指向个人中心 vue组件*/
+                    routerPage='#/userMainPage?' +
+                        'cityId='+this.cityId
+                        +'&cityName='+this.data2.cityName
+                        +'&userData='+JSON.stringify(this.userData);
                 }
                 this.$router.push(routerPage);
             }

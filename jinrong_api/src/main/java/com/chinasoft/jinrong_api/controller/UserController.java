@@ -9,13 +9,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import javax.mail.Multipart;
 import javax.servlet.http.HttpServletRequest;
+import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+import java.util.UUID;
 @RestController
 @RequestMapping("/")
 public class UserController {
@@ -27,6 +30,31 @@ public class UserController {
      return  new ReturnData(StatusCode.REQUEST_SUCCESS,
              userService.selectGoodsAll(map.get("goodsId")+""),"后端数据交互正常！");
   }
+    @RequestMapping("/userImgUpload")
+    public Object userImgUpload(HttpServletRequest request,
+                                MultipartFile userImg, @RequestParam Map<String,Object> map){
+      System.out.println(userImg+">>>>>>>>>>");
+      if(userImg==null){
+               throw  new MyException(StatusCode.USER_NOT_EXIST,"传输数据为空");
+           }
+        /*创建新文件名   一个原则 新文件名不能重复*/
+        String newFileName=UUID.randomUUID().toString().replaceAll("-", "")
+                +userImg.getOriginalFilename().substring(userImg.getOriginalFilename().lastIndexOf("."));
+        String newFilePath=request.getSession().getServletContext()
+                .getRealPath("/upload/")+newFileName;
+      /*System.out.println(newFilePath);*/
+        /*新文件 对象实例化*/
+       // File newFile=new File(newFilePath);
+        Map<String,Object> map1=new HashMap<String,Object>();
+        try {
+                userImg.transferTo(new File(newFilePath));
+            map1.put("imgName",newFileName);
+            }catch (Exception e){
+            map1.put("imgName","404.png");
+e.printStackTrace();
+            }
+            return  new ReturnData(StatusCode.REQUEST_SUCCESS,map1,"上传用户头像图片正常");
+    }
 
     @RequestMapping(value = "/getCityData",method = RequestMethod.POST)
     public Object getCityData(@RequestParam Map<String,Object> map){
