@@ -1,5 +1,6 @@
 var webpack=require('webpack');
 module.exports={
+    //github pull文件测试
     devServer:{
       // host:"192.168.3.135",
         //port:80,
