@@ -2,7 +2,7 @@ var webpack=require('webpack');
 module.exports={
     devServer:{
       // host:"192.168.3.135",
-        port:80,
+        //port:80,
         /*axios 代理链接全局配置*/
         proxy:{
         '/api':{

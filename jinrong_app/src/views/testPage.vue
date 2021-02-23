@@ -16,7 +16,7 @@
 </template>
 
 <script>
-
+import data from '../data.json';
 
     export default {
         name: "testPage",
@@ -26,6 +26,9 @@
             age:'',
              submitStatus: null,
             }
+        },mounted() {
+            alert(data.urlMark);
+           // axios.post(data.urlMark+'??Controller',{})
         },methods:{
 
         },
